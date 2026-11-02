@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste API - Livros</title>
+</head>
+<body>
+    <h1>API de livros</h1>
+
+    <p>Id: <input id="id" type="number" value="1"></p>
+    <p>Título: <input id="titulo" type="text" value="Os Lusíadas"></p>
+    <p>Autor: <input id="autor" type="text" value="Luís de Camões"></p>
+    <p>Ano: <input id="ano" type="number" value="1572"></p>
+
+    <p>
+        <button onclick="listarLivros()">GET lista</button>
+        <button onclick="obterLivro()">GET por id</button>
+        <button onclick="enviarLivro()">POST criar</button>
+        <button onclick="actualizarLivro()">PUT actualizar</button>
+        <button onclick="apagarLivro()">DELETE apagar</button>
+    </p>
+
+    <pre id="resultado"></pre>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="teste.js"></script>
+</body>
+</html>
