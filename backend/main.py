@@ -7,15 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from database import Base, engine, get_db
-from models import Book
-from schemas import BookIn, BookOut
+from models import Epocas, Campos 
+from schemas import EpocaIn, EpocaOut, CampoIn, CampoOut
+
 
 # Cria a tabela "books" no MySQL se ainda não existir.
 # Não apaga dados: só cria a estrutura em falta.
 Base.metadata.create_all(bind=engine)
 
 # Aplicação FastAPI. A documentação automática fica em /docs
-app = FastAPI(title="API de Livros")
+app = FastAPI(title="API Projeto final")
 
 # CORS: permite que uma página web noutro endereço (ex.: localhost:5500)
 # faça pedidos a esta API. Sem isto, o browser bloqueia a comunicação.
@@ -28,12 +29,21 @@ app.add_middleware(
 )
 
 
-# GET /books  ->  lista todos os livros
-@app.get("/books", response_model=list[BookOut])
+# CRUD CAMPOS
+@app.get("/campos", response_model=list[CampoOut])
 def listar(db: Session = Depends(get_db)):
-    return db.query(Book).all()
+    return db.query(Campos).all()
 
 
+# CRUD EPOCAS
+@app.get("/epocas", response_model=list[EpocaOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Epocas).all()
+
+
+
+
+'''
 # GET /books/3  ->  devolve o livro com id 3, ou 404 se não existir
 @app.get("/books/{book_id}", response_model=BookOut)
 def obter(book_id: int, db: Session = Depends(get_db)):
@@ -75,3 +85,5 @@ def apagar(book_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Livro não encontrado")
     db.delete(livro)
     db.commit()
+
+'''

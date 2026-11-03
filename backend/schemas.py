@@ -7,14 +7,26 @@ from pydantic import BaseModel
 
 
 # Dados que o cliente envia para criar ou actualizar um livro (JSON de entrada)
-class BookIn(BaseModel):
-    title: str
-    author: str
-    year: int | None = None  # o ano é opcional
+class EpocaIn(BaseModel):
+    epoca : str
 
 
 # Dados que a API devolve (os mesmos campos + o id gerado pela base de dados)
-class BookOut(BookIn):
+class EpocaOut(EpocaIn):
+    id: int
+
+    # Permite converter um objecto Book (SQLAlchemy) para este modelo Pydantic
+    model_config = {"from_attributes": True}
+
+class CampoIn(BaseModel):
+    nome: str
+    morada: str | None
+    cidade: str | None
+    capacidade: int | None
+
+
+# Dados que a API devolve (os mesmos campos + o id gerado pela base de dados)
+class CampoOut(CampoIn):
     id: int
 
     # Permite converter um objecto Book (SQLAlchemy) para este modelo Pydantic
