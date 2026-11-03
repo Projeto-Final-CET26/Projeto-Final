@@ -8,11 +8,11 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 # Endereço de ligação:
 # utilizador "root", sem palavra-passe, servidor local, porta 3306, base "library".
 # Se o MySQL tiver palavra-passe, use: mysql+pymysql://root:PASSWORD@localhost:3306/library
-DATABASE_URL = "mysql+pymysql://root@localhost:3306/library"
+DATABASE_URL = "mysql+pymysql://root@localhost:3306/projeto_final"
 
 # Primeiro ligamos sem escolher uma base, só para criar a "library" se ainda não existir.
 with create_engine("mysql+pymysql://root@localhost:3306").connect() as ligacao:
-    ligacao.execute(text("CREATE DATABASE IF NOT EXISTS library"))
+    ligacao.execute(text("CREATE DATABASE IF NOT EXISTS projeto_final"))
     ligacao.commit()
 
 # Motor de ligação já apontado para a base "library".
