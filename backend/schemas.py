@@ -4,6 +4,7 @@
 #   - schemas.py ->  dados que entram e saem na API (Pydantic)
 
 from pydantic import BaseModel
+from datetime import date
 
 
 # Dados que o cliente envia para criar ou actualizar um livro (JSON de entrada)
@@ -30,4 +31,19 @@ class CampoOut(CampoIn):
     id: int
 
     # Permite converter um objecto Book (SQLAlchemy) para este modelo Pydantic
+    model_config = {"from_attributes": True}
+
+
+class UtilizadorIn(BaseModel):
+    primeiro_nome: str
+    apelido: str | None
+    tipo: int
+    password: str
+    email: str
+    foto_url: str
+
+
+class UtilizadorOut(UtilizadorIn):
+    id: int
+
     model_config = {"from_attributes": True}

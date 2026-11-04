@@ -14,3 +14,7 @@ class Campos(Base):
 class Epocas(Base):
     __table__ = Table("epoca", Base.metadata, autoload_with=engine)
 
+class Utilizadores(Base):
+    __table__ = Table("utilizadores", Base.metadata, autoload_with=engine)
+
+
