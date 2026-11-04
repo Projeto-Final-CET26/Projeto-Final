@@ -118,12 +118,84 @@ def actualizar(epoca_id: int, dados: EpocaIn, db: Session = Depends(get_db)):
     db.refresh(epoca)
     return epoca 
 
-@app.delete("/epocas/{epoca_id}", status_code=204)
-def apagar(epoca_id: int, db: Session = Depends(get_db)):
-    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
-    if not epoca:
-        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
-    db.delete(epoca)
+@app.delete("/utilizadores/{utilizador_id}", status_code=204)
+def apagar(utilizador_id: int, db: Session = Depends(get_db)):
+    utilizador = db.query(Utilizadores).filter(Utilizadores.id == utilizador_id).first()
+    if not utilizador:
+        raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
+    db.delete(utilizador)
+    db.commit()
+
+# CRUD METRICAS 
+@app.get("/metricas", response_model=list[MetricasOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Metricas).all()
+
+@app.post("/metricas", response_model=MetricasOut, status_code=201)
+def criar(dados: MetricasIn, db: Session = Depends(get_db)):
+    metrica = Metricas(**dados.model_dump())
+    db.add(metrica)
+    db.commit()
+    db.refresh(metrica)
+    return metrica
+
+@app.put("/metricas/{metrica_id}", response_model=MetricasOut)
+def actualizar(metrica_id: int, dados: MetricasIn, db: Session = Depends(get_db)):
+    metrica = db.query(Metricas).filter(Metricas.id == metrica_id).first()
+    if not metrica:
+        raise HTTPException(status_code=404, detail="Metrica não encontrada.")
+    metrica.descricao = dados.descricao
+    metrica.unidade = dados.unidade
+    metrica.desporto_id = dados.desporto_id
+    metrica.sempre_visivel = dados.sempre_visivel
+    db.commit()
+    db.refresh(metrica)
+    return metrica 
+
+@app.delete("/metricas/{metrica_id}", status_code=204)
+def apagar(metrica_id: int, db: Session = Depends(get_db)):
+    metrica = db.query(Metricas).filter(Metricas.id == metrica_id).first()
+    if not metrica:
+        raise HTTPException(status_code=404, detail="Metrica não encontrada.")
+    db.delete(metrica)
+    db.commit()
+
+# CRUD LESAO 
+@app.get("/lesoes", response_model=list[LesaoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(LesaoOut).all()
+
+@app.post("/lesoes", response_model=LesaoOut, status_code=201)
+def criar(dados: LesaoIn, db: Session = Depends(get_db)):
+    lesao = Lesoes(**dados.model_dump())
+    db.add(lesao)
+    db.commit()
+    db.refresh(lesao)
+    return lesao 
+
+@app.put("/lesoes/{lesoes_id}", response_model=Lesoes)
+def actualizar(lesoes_id: int, dados: LesaoIn, db: Session = Depends(get_db)):
+    lesao = db.query(Lesoes).filter(Lesoes.id == lesoes_id).first()
+    if not lesao:
+        raise HTTPException(status_code=404, detail="Lesão não encontrada.")
+    lesao.estado = dados.estado
+    lesao.descricao = dados.descricao
+    lesao.jogador_id = dados.jogador_id
+    lesao.epoca_id = dados.epoca_id
+    lesao.zona = dados.zona
+    lesao.data_inicio = dados.data_inicio
+    lesao.data_prevista_fim = dados.data_prevista_fim
+    lesao.data_fim = dados.data_fim
+    db.commit()
+    db.refresh(lesao)
+    return lesao 
+
+@app.delete("/lesoes/{lesao_id}", status_code=204)
+def apagar(lesao_id: int, db: Session = Depends(get_db)):
+    lesao = db.query(Lesoes).filter(Lesoes.id == lesao_id).first()
+    if not lesao:
+        raise HTTPException(status_code=404, detail="Lesão não encontrada.")
+    db.delete(lesao)
     db.commit()
 
 
