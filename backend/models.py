@@ -10,11 +10,19 @@ class Campos(Base):
     __table__ = Table("campo", Base.metadata, autoload_with=engine)
 
 
-
 class Epocas(Base):
     __table__ = Table("epoca", Base.metadata, autoload_with=engine)
 
+
 class Utilizadores(Base):
     __table__ = Table("utilizadores", Base.metadata, autoload_with=engine)
+
+
+class Gestores(Base):
+    __table__ = Table("gestor", Base.metadata, autoload_with=engine)
+
+
+class Jogadores(Base):
+    __table__ = Table("jogador", Base.metadata, autoload_with=engine)
 
 
