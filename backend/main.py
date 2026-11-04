@@ -160,10 +160,43 @@ def apagar(metrica_id: int, db: Session = Depends(get_db)):
     db.delete(metrica)
     db.commit()
 
+# CRUD SUBMETRICAS 
+@app.get("/submetricas", response_model=list[SubMetricaOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(SubMetricas).all()
+
+@app.post("/submetricas", response_model=SubMetricaOut, status_code=201)
+def criar(dados: SubMetricaIn, db: Session = Depends(get_db)):
+    submetrica = SubMetricas(**dados.model_dump())
+    db.add(submetrica)
+    db.commit()
+    db.refresh(submetrica)
+    return submetrica
+
+@app.put("/submetricas/{submetrica_id}", response_model=SubMetricaOut)
+def actualizar(submetrica_id: int, dados: SubMetricaIn, db: Session = Depends(get_db)):
+    submetrica = db.query(SubMetricas).filter(SubMetricas.id == submetrica_id).first()
+    if not submetrica:
+        raise HTTPException(status_code=404, detail="Sub-metrica não encontrada.")
+    submetrica.metrica_id= dados.metrica_id
+    submetrica.descricao = dados.descricao
+    submetrica.equipa_id = dados.equipa_id
+    db.commit()
+    db.refresh(submetrica)
+    return submetrica 
+
+@app.delete("/submetricas/{submetrica_id}", status_code=204)
+def apagar(submetrica_id: int, db: Session = Depends(get_db)):
+    submetrica = db.query(SubMetricas).filter(SubMetricas.id == submetrica_id).first()
+    if not submetrica:
+        raise HTTPException(status_code=404, detail="Sub-metrica não encontrada.")
+    db.delete(submetrica)
+    db.commit()
+
 # CRUD LESAO 
 @app.get("/lesoes", response_model=list[LesaoOut])
 def listar(db: Session = Depends(get_db)):
-    return db.query(LesaoOut).all()
+    return db.query(Lesoes).all()
 
 @app.post("/lesoes", response_model=LesaoOut, status_code=201)
 def criar(dados: LesaoIn, db: Session = Depends(get_db)):
@@ -173,7 +206,7 @@ def criar(dados: LesaoIn, db: Session = Depends(get_db)):
     db.refresh(lesao)
     return lesao 
 
-@app.put("/lesoes/{lesoes_id}", response_model=Lesoes)
+@app.put("/lesoes/{lesoes_id}", response_model=LesaoOut)
 def actualizar(lesoes_id: int, dados: LesaoIn, db: Session = Depends(get_db)):
     lesao = db.query(Lesoes).filter(Lesoes.id == lesoes_id).first()
     if not lesao:
@@ -196,6 +229,75 @@ def apagar(lesao_id: int, db: Session = Depends(get_db)):
     if not lesao:
         raise HTTPException(status_code=404, detail="Lesão não encontrada.")
     db.delete(lesao)
+    db.commit()
+
+# READ POSICOES 
+@app.get("/posicoes", response_model=list[PosicaoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Posicoes).all()
+
+# CRUD POSICAOSECUNDARIA 
+@app.get("/posicoes_secundarias", response_model=list[PosicaoSecundariaOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(PosicoesSecundarias).all()
+
+@app.post("/posicoes_secundarias", response_model=PosicaoSecundariaOut, status_code=201)
+def criar(dados: PosicaoSecundariaIn, db: Session = Depends(get_db)):
+    pos_sec = PosicoesSecundarias(**dados.model_dump())
+    db.add(pos_sec)
+    db.commit()
+    db.refresh(pos_sec)
+    return pos_sec 
+
+@app.put("/posicoes_secundarias/{pos_sec_id}", response_model=PosicaoSecundariaOut)
+def actualizar(pos_sec_id: int, dados: PosicaoSecundariaIn, db: Session = Depends(get_db)):
+    pos_sec = db.query(PosicoesSecundarias).filter(PosicoesSecundarias.id == pos_sec_id).first()
+    if not pos_sec:
+        raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
+    pos_sec.posicao_id = dados.posicao_id
+    pos_sec.jogador_id = dados.jogador_id
+    db.commit()
+    db.refresh(pos_sec)
+    return pos_sec 
+
+@app.delete("/posicoes_secundarias/{pos_sec_id}", status_code=204)
+def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
+    pos_sec = db.query(PosicoesSecundarias).filter(PosicoesSecundarias.id == pos_sec_id).first()
+    if not pos_sec:
+        raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
+    db.delete(pos_sec)
+    db.commit()
+
+# CRUD JOGO 
+@app.get("/jogos", response_model=list[JogoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Jogos).all()
+
+@app.post("/jogos", response_model=JogoOut, status_code=201)
+def criar(dados: JogoIn, db: Session = Depends(get_db)):
+    jogo = Jogos(**dados.model_dump())
+    db.add(jogo)
+    db.commit()
+    db.refresh(jogo)
+    return jogo
+
+@app.put("/posicoes_secundarias/{pos_sec_id}", response_model=PosicaoSecundariaOut)
+def actualizar(pos_sec_id: int, dados: PosicaoSecundariaIn, db: Session = Depends(get_db)):
+    pos_sec = db.query(PosicoesSecundarias).filter(PosicoesSecundarias.id == pos_sec_id).first()
+    if not pos_sec:
+        raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
+    pos_sec.posicao_id = dados.posicao_id
+    pos_sec.jogador_id = dados.jogador_id
+    db.commit()
+    db.refresh(pos_sec)
+    return pos_sec 
+
+@app.delete("/posicoes_secundarias/{pos_sec_id}", status_code=204)
+def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
+    pos_sec = db.query(PosicoesSecundarias).filter(PosicoesSecundarias.id == pos_sec_id).first()
+    if not pos_sec:
+        raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
+    db.delete(pos_sec)
     db.commit()
 
 

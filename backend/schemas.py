@@ -4,7 +4,7 @@
 #   - schemas.py ->  dados que entram e saem na API (Pydantic)
 
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 
 # Dados que o cliente envia para criar ou actualizar um livro (JSON de entrada)
@@ -72,6 +72,17 @@ class MetricasOut(MetricasIn):
 
     model_config = {"from_attributes": True}
 
+class SubMetricaIn(BaseModel):
+    metrica_id: int
+    descricao: str
+    equipa_id: int | None
+
+
+class SubMetricaOut(SubMetricaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
 
 
 class JogadorIn(BaseModel):
@@ -96,12 +107,49 @@ class LesaoIn(BaseModel):
     jogador_id: int
     epoca_id: int
     zona: int
-    data_inicio: date
-    data_prevista_fim: date
-    data_fim: date
+    data_inicio: date 
+    data_prevista_fim: date | None
+    data_fim: date | None
 
 
 class LesaoOut(LesaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class PosicaoIn(BaseModel):
+    desporto_id: int
+    nome: str
+    sigla: int
+
+
+class PosicaoOut(PosicaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class PosicaoSecundariaIn(BaseModel):
+    posicao_id: int
+    jogador_id: int
+
+
+class PosicaoSecundariaOut(PosicaoSecundariaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class JogoIn(BaseModel):
+    epoca_id: int
+    campo_id: int
+    equipa_casa: int
+    equipa_fora: int
+    pontos_casa: int
+    pontos_fora: int
+    data_hora: datetime
+
+
+
+class JogoOut(JogoIn):
     id: int
 
     model_config = {"from_attributes": True}

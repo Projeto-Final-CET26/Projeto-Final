@@ -19,8 +19,20 @@ class Utilizadores(Base):
 class Metricas(Base):
     __table__ = Table("metricas", Base.metadata, autoload_with=engine)
 
+class SubMetricas(Base):
+    __table__ = Table("submetricas", Base.metadata, autoload_with=engine)
+
 class Lesoes(Base):
     __table__ = Table("lesao", Base.metadata, autoload_with=engine)
+
+class Posicoes(Base):
+    __table__ = Table("posicoes", Base.metadata, autoload_with=engine)
+
+class PosicoesSecundarias(Base):
+    __table__ = Table("posicoes_secundarias", Base.metadata, autoload_with=engine)
+
+class Jogos(Base):
+    __table__ = Table("jogo", Base.metadata, autoload_with=engine)
 
 
 class Gestores(Base):
