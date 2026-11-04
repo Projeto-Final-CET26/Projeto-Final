@@ -301,6 +301,75 @@ def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
+# CRUD GESTORES
+@app.get("/gestores", response_model=list[GestorOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Gestores).all()
+
+@app.put("/gestores/{gestor_id}", response_model=GestorOut)
+def actualizar(gestor_id: int, dados: GestorIn, db: Session = Depends(get_db)):
+    gestor = db.query(Gestores).filter(Gestores.id == gestor_id).first()
+    if not gestor:
+        raise HTTPException(status_code=404, detail="Gestor não encontrado.")
+    gestor.primeiro_nome = dados.primeiro_nome
+    gestor.apelido = dados.apelido
+    gestor.equipa_id = dados.equipa_id
+    db.commit()
+    db.refresh(gestor)
+    return gestor
+
+@app.delete("/gestores/{gestor_id}", status_code=204)
+def apagar(gestor_id: int, db: Session = Depends(get_db)):
+    gestor = db.query(Gestores).filter(Gestores.id == gestor_id).first()
+    if not gestor:
+        raise HTTPException(status_code=404, detail="Gestor não encontrado.")
+    db.delete(gestor)
+    db.commit()
+
+
+# CRUD JOGADORES
+@app.get("/jogadores", response_model=list[JogadorOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Jogadores).all()
+
+@app.post("/jogadores", response_model=JogadorOut, status_code=201)
+def criar(dados: JogadorIn, db: Session = Depends(get_db)):
+    jogador = Jogadores(**dados.model_dump())
+    db.add(jogador)
+    db.commit()
+    db.refresh(jogador)
+    return jogador
+
+@app.put("/jogadores/{jogador_id}", response_model=JogadorOut)
+def actualizar(jogador_id: int, dados: JogadorIn, db: Session = Depends(get_db)):
+    jogador = db.query(Jogadores).filter(Jogadores.id == jogador_id).first()
+    if not jogador:
+        raise HTTPException(status_code=404, detail="Jogador não encontrado.")
+    jogador.primeiro_nome = dados.primeiro_nome
+    jogador.apelido = dados.apelido
+    jogador.nacionalidade = dados.nacionalidade
+    jogador.data_nascimento = dados.data_nascimento
+    jogador.altura_cm = dados.altura_cm
+    jogador.peso_kg = dados.peso_kg
+    jogador.foto_url = dados.foto_url
+    jogador.numero_camisola = dados.numero_camisola
+    jogador.equipa_id = dados.equipa_id
+    jogador.desporto_id = dados.desporto_id
+    jogador.posicao_id = dados.posicao_id
+    jogador.utilizador_id = dados.utilizador_id
+    db.commit()
+    db.refresh(jogador)
+    return jogador
+
+@app.delete("/jogadores/{jogador_id}", status_code=204)
+def apagar(jogador_id: int, db: Session = Depends(get_db)):
+    jogador = db.query(Jogadores).filter(Jogadores.id == jogador_id).first()
+    if not jogador:
+        raise HTTPException(status_code=404, detail="Jogador não encontrado.")
+    db.delete(jogador)
+    db.commit()
+
+
 
 
 '''
