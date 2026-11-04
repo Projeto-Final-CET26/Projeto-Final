@@ -24,4 +24,10 @@ class SubMetricas(Base):
 class Lesoes(Base):
     __table__ = Table("lesao", Base.metadata, autoload_with=engine)
 
+class Posicoes(Base):
+    __table__ = Table("posicoes", Base.metadata, autoload_with=engine)
+
+class PosicoesSecundarias(Base):
+    __table__ = Table("posicoes_secundarias", Base.metadata, autoload_with=engine)
+
 

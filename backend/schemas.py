@@ -86,3 +86,24 @@ class LesaoOut(LesaoIn):
     id: int
 
     model_config = {"from_attributes": True}
+
+class PosicaoIn(BaseModel):
+    desporto_id: int
+    nome: str
+    sigla: int
+
+
+class PosicaoOut(PosicaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class PosicaoSecundariaIn(BaseModel):
+    posicao_id: int
+    jogador_id: int
+
+
+class PosicaoSecundariaOut(PosicaoSecundariaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
