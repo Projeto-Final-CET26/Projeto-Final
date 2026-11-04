@@ -118,12 +118,12 @@ def actualizar(epoca_id: int, dados: EpocaIn, db: Session = Depends(get_db)):
     db.refresh(epoca)
     return epoca 
 
-@app.delete("/epocas/{epoca_id}", status_code=204)
-def apagar(epoca_id: int, db: Session = Depends(get_db)):
-    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
-    if not epoca:
-        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
-    db.delete(epoca)
+@app.delete("/utilizadores/{utilizador_id}", status_code=204)
+def apagar(utilizador_id: int, db: Session = Depends(get_db)):
+    utilizador = db.query(Utilizadores).filter(Utilizadores.id == utilizador_id).first()
+    if not utilizador:
+        raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
+    db.delete(utilizador)
     db.commit()
 
 # CRUD METRICAS 
