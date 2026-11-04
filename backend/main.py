@@ -34,6 +34,35 @@ app.add_middleware(
 def listar(db: Session = Depends(get_db)):
     return db.query(Campos).all()
 
+@app.post("/campos", response_model=CampoOut, status_code=201)
+def criar(dados: CampoIn, db: Session = Depends(get_db)):
+    campo = Campos(**dados.model_dump())
+    db.add(campo)
+    db.commit()
+    db.refresh(campo)
+    return campo 
+
+@app.put("/campos/{campo_id}", response_model=CampoOut)
+def actualizar(campo_id: int, dados: CampoIn, db: Session = Depends(get_db)):
+    campo = db.query(Campos).filter(Campos.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=404, detail="Campo não encontrado.")
+    campo.nome = dados.nome
+    campo.morada = dados.morada
+    campo.cidade = dados.cidade
+    campo.capacidade = dados.capacidade
+    db.commit()
+    db.refresh(campo)
+    return campo
+
+@app.delete("/campos/{campo_id}", status_code=204)
+def apagar(campo_id: int, db: Session = Depends(get_db)):
+    campo = db.query(Campos).filter(Campos.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=404, detail="Campo não encontrado")
+    db.delete(campo)
+    db.commit()
+
 
 # CRUD EPOCAS
 @app.get("/epocas", response_model=list[EpocaOut])
