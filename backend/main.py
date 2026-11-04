@@ -160,10 +160,43 @@ def apagar(metrica_id: int, db: Session = Depends(get_db)):
     db.delete(metrica)
     db.commit()
 
+# CRUD SUBMETRICAS 
+@app.get("/submetricas", response_model=list[SubMetricaOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(SubMetricas).all()
+
+@app.post("/submetricas", response_model=SubMetricaOut, status_code=201)
+def criar(dados: SubMetricaIn, db: Session = Depends(get_db)):
+    submetrica = SubMetricas(**dados.model_dump())
+    db.add(submetrica)
+    db.commit()
+    db.refresh(submetrica)
+    return submetrica
+
+@app.put("/submetricas/{submetrica_id}", response_model=SubMetricaOut)
+def actualizar(submetrica_id: int, dados: SubMetricaIn, db: Session = Depends(get_db)):
+    submetrica = db.query(SubMetricas).filter(SubMetricas.id == submetrica_id).first()
+    if not submetrica:
+        raise HTTPException(status_code=404, detail="Sub-metrica não encontrada.")
+    submetrica.metrica_id= dados.metrica_id
+    submetrica.descricao = dados.descricao
+    submetrica.equipa_id = dados.equipa_id
+    db.commit()
+    db.refresh(submetrica)
+    return submetrica 
+
+@app.delete("/submetricas/{submetrica_id}", status_code=204)
+def apagar(submetrica_id: int, db: Session = Depends(get_db)):
+    submetrica = db.query(SubMetricas).filter(SubMetricas.id == submetrica_id).first()
+    if not submetrica:
+        raise HTTPException(status_code=404, detail="Sub-metrica não encontrada.")
+    db.delete(submetrica)
+    db.commit()
+
 # CRUD LESAO 
 @app.get("/lesoes", response_model=list[LesaoOut])
 def listar(db: Session = Depends(get_db)):
-    return db.query(LesaoOut).all()
+    return db.query(Lesoes).all()
 
 @app.post("/lesoes", response_model=LesaoOut, status_code=201)
 def criar(dados: LesaoIn, db: Session = Depends(get_db)):
@@ -173,7 +206,7 @@ def criar(dados: LesaoIn, db: Session = Depends(get_db)):
     db.refresh(lesao)
     return lesao 
 
-@app.put("/lesoes/{lesoes_id}", response_model=Lesoes)
+@app.put("/lesoes/{lesoes_id}", response_model=LesaoOut)
 def actualizar(lesoes_id: int, dados: LesaoIn, db: Session = Depends(get_db)):
     lesao = db.query(Lesoes).filter(Lesoes.id == lesoes_id).first()
     if not lesao:

@@ -60,15 +60,26 @@ class MetricasOut(MetricasIn):
 
     model_config = {"from_attributes": True}
 
+class SubMetricaIn(BaseModel):
+    metrica_id: int
+    descricao: str
+    equipa_id: int | None
+
+
+class SubMetricaOut(SubMetricaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
 class LesaoIn(BaseModel):
     estado: str
     descricao: str
     jogador_id: int
     epoca_id: int
     zona: int
-    data_inicio: date
-    data_prevista_fim: date
-    data_fim: date
+    data_inicio: date 
+    data_prevista_fim: date | None
+    data_fim: date | None
 
 
 class LesaoOut(LesaoIn):
