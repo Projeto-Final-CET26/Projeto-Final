@@ -59,3 +59,19 @@ class MetricasOut(MetricasIn):
     id: int
 
     model_config = {"from_attributes": True}
+
+class LesaoIn(BaseModel):
+    estado: str
+    descricao: str
+    jogador_id: int
+    epoca_id: int
+    zona: int
+    data_inicio: date
+    data_prevista_fim: date
+    data_fim: date
+
+
+class LesaoOut(LesaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}

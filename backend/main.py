@@ -160,6 +160,44 @@ def apagar(metrica_id: int, db: Session = Depends(get_db)):
     db.delete(metrica)
     db.commit()
 
+# CRUD LESAO 
+@app.get("/lesoes", response_model=list[LesaoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(LesaoOut).all()
+
+@app.post("/lesoes", response_model=LesaoOut, status_code=201)
+def criar(dados: LesaoIn, db: Session = Depends(get_db)):
+    lesao = Lesoes(**dados.model_dump())
+    db.add(lesao)
+    db.commit()
+    db.refresh(lesao)
+    return lesao 
+
+@app.put("/lesoes/{lesoes_id}", response_model=Lesoes)
+def actualizar(lesoes_id: int, dados: LesaoIn, db: Session = Depends(get_db)):
+    lesao = db.query(Lesoes).filter(Lesoes.id == lesoes_id).first()
+    if not lesao:
+        raise HTTPException(status_code=404, detail="Lesão não encontrada.")
+    lesao.estado = dados.estado
+    lesao.descricao = dados.descricao
+    lesao.jogador_id = dados.jogador_id
+    lesao.epoca_id = dados.epoca_id
+    lesao.zona = dados.zona
+    lesao.data_inicio = dados.data_inicio
+    lesao.data_prevista_fim = dados.data_prevista_fim
+    lesao.data_fim = dados.data_fim
+    db.commit()
+    db.refresh(lesao)
+    return lesao 
+
+@app.delete("/lesoes/{lesao_id}", status_code=204)
+def apagar(lesao_id: int, db: Session = Depends(get_db)):
+    lesao = db.query(Lesoes).filter(Lesoes.id == lesao_id).first()
+    if not lesao:
+        raise HTTPException(status_code=404, detail="Lesão não encontrada.")
+    db.delete(lesao)
+    db.commit()
+
 
 
 

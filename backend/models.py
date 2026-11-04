@@ -18,4 +18,7 @@ class Utilizadores(Base):
 class Metricas(Base):
     __table__ = Table("metricas", Base.metadata, autoload_with=engine)
 
+class Lesoes(Base):
+    __table__ = Table("lesao", Base.metadata, autoload_with=engine)
+
 
