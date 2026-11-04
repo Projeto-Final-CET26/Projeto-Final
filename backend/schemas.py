@@ -4,7 +4,7 @@
 #   - schemas.py ->  dados que entram e saem na API (Pydantic)
 
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 
 # Dados que o cliente envia para criar ou actualizar um livro (JSON de entrada)
@@ -104,6 +104,22 @@ class PosicaoSecundariaIn(BaseModel):
 
 
 class PosicaoSecundariaOut(PosicaoSecundariaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class JogoIn(BaseModel):
+    epoca_id: int
+    campo_id: int
+    equipa_casa: int
+    equipa_fora: int
+    pontos_casa: int
+    pontos_fora: int
+    data_hora: datetime
+
+
+
+class JogoOut(JogoIn):
     id: int
 
     model_config = {"from_attributes": True}

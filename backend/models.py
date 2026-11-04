@@ -30,4 +30,7 @@ class Posicoes(Base):
 class PosicoesSecundarias(Base):
     __table__ = Table("posicoes_secundarias", Base.metadata, autoload_with=engine)
 
+class Jogos(Base):
+    __table__ = Table("jogo", Base.metadata, autoload_with=engine)
+
 
