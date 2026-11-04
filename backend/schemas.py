@@ -47,3 +47,15 @@ class UtilizadorOut(UtilizadorIn):
     id: int
 
     model_config = {"from_attributes": True}
+
+class MetricasIn(BaseModel):
+    descricao: str
+    unidade: str
+    desporto_id: int
+    sempre_visivel: str
+
+
+class MetricasOut(MetricasIn):
+    id: int
+
+    model_config = {"from_attributes": True}

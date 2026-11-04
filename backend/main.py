@@ -126,6 +126,40 @@ def apagar(epoca_id: int, db: Session = Depends(get_db)):
     db.delete(epoca)
     db.commit()
 
+# CRUD METRICAS 
+@app.get("/metricas", response_model=list[MetricasOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Metricas).all()
+
+@app.post("/metricas", response_model=MetricasOut, status_code=201)
+def criar(dados: MetricasIn, db: Session = Depends(get_db)):
+    metrica = Metricas(**dados.model_dump())
+    db.add(metrica)
+    db.commit()
+    db.refresh(metrica)
+    return metrica
+
+@app.put("/metricas/{metrica_id}", response_model=MetricasOut)
+def actualizar(metrica_id: int, dados: MetricasIn, db: Session = Depends(get_db)):
+    metrica = db.query(Metricas).filter(Metricas.id == metrica_id).first()
+    if not metrica:
+        raise HTTPException(status_code=404, detail="Metrica não encontrada.")
+    metrica.descricao = dados.descricao
+    metrica.unidade = dados.unidade
+    metrica.desporto_id = dados.desporto_id
+    metrica.sempre_visivel = dados.sempre_visivel
+    db.commit()
+    db.refresh(metrica)
+    return metrica 
+
+@app.delete("/metricas/{metrica_id}", status_code=204)
+def apagar(metrica_id: int, db: Session = Depends(get_db)):
+    metrica = db.query(Metricas).filter(Metricas.id == metrica_id).first()
+    if not metrica:
+        raise HTTPException(status_code=404, detail="Metrica não encontrada.")
+    db.delete(metrica)
+    db.commit()
+
 
 
 

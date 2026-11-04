@@ -9,12 +9,13 @@ from database import Base, engine
 class Campos(Base):
     __table__ = Table("campo", Base.metadata, autoload_with=engine)
 
-
-
 class Epocas(Base):
     __table__ = Table("epoca", Base.metadata, autoload_with=engine)
 
 class Utilizadores(Base):
     __table__ = Table("utilizadores", Base.metadata, autoload_with=engine)
+
+class Metricas(Base):
+    __table__ = Table("metricas", Base.metadata, autoload_with=engine)
 
 
