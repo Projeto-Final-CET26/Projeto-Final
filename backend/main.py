@@ -69,6 +69,32 @@ def apagar(campo_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Epocas).all()
 
+@app.post("/epocas", response_model=EpocaOut, status_code=201)
+def criar(dados: EpocaIn, db: Session = Depends(get_db)):
+    epoca = Campos(**dados.model_dump())
+    db.add(epoca)
+    db.commit()
+    db.refresh(epoca)
+    return epoca 
+
+@app.put("/epocas/{epoca_id}", response_model=EpocaOut)
+def actualizar(epoca_id: int, dados: EpocaIn, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    epoca.epoca = dados.epoca
+    db.commit()
+    db.refresh(epoca)
+    return epoca 
+
+@app.delete("/epocas/{epoca_id}", status_code=204)
+def apagar(epoca_id: int, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    db.delete(epoca)
+    db.commit()
+
 
 
 
