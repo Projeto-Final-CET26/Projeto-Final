@@ -7,8 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from database import Base, engine, get_db
-from models import Epocas, Campos 
-from schemas import EpocaIn, EpocaOut, CampoIn, CampoOut
+from models import * 
+from schemas import *
 
 
 # Cria a tabela "books" no MySQL se ainda não existir.
@@ -34,11 +34,97 @@ app.add_middleware(
 def listar(db: Session = Depends(get_db)):
     return db.query(Campos).all()
 
+@app.post("/campos", response_model=CampoOut, status_code=201)
+def criar(dados: CampoIn, db: Session = Depends(get_db)):
+    campo = Campos(**dados.model_dump())
+    db.add(campo)
+    db.commit()
+    db.refresh(campo)
+    return campo 
+
+@app.put("/campos/{campo_id}", response_model=CampoOut)
+def actualizar(campo_id: int, dados: CampoIn, db: Session = Depends(get_db)):
+    campo = db.query(Campos).filter(Campos.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=404, detail="Campo não encontrado.")
+    campo.nome = dados.nome
+    campo.morada = dados.morada
+    campo.cidade = dados.cidade
+    campo.capacidade = dados.capacidade
+    db.commit()
+    db.refresh(campo)
+    return campo
+
+@app.delete("/campos/{campo_id}", status_code=204)
+def apagar(campo_id: int, db: Session = Depends(get_db)):
+    campo = db.query(Campos).filter(Campos.id == campo_id).first()
+    if not campo:
+        raise HTTPException(status_code=404, detail="Campo não encontrado")
+    db.delete(campo)
+    db.commit()
+
 
 # CRUD EPOCAS
 @app.get("/epocas", response_model=list[EpocaOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(Epocas).all()
+
+@app.post("/epocas", response_model=EpocaOut, status_code=201)
+def criar(dados: EpocaIn, db: Session = Depends(get_db)):
+    epoca = Campos(**dados.model_dump())
+    db.add(epoca)
+    db.commit()
+    db.refresh(epoca)
+    return epoca 
+
+@app.put("/epocas/{epoca_id}", response_model=EpocaOut)
+def actualizar(epoca_id: int, dados: EpocaIn, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    epoca.epoca = dados.epoca
+    db.commit()
+    db.refresh(epoca)
+    return epoca 
+
+@app.delete("/epocas/{epoca_id}", status_code=204)
+def apagar(epoca_id: int, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    db.delete(epoca)
+    db.commit()
+
+# CRUD UTILIZADORES 
+@app.get("/utilizadores", response_model=list[UtilizadorOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Utilizadores).all()
+
+@app.post("/utilizadores", response_model=UtilizadorOut, status_code=201)
+def criar(dados: UtilizadorIn, db: Session = Depends(get_db)):
+    utilizador = Utilizadores(**dados.model_dump())
+    db.add(utilizador)
+    db.commit()
+    db.refresh(utilizador)
+    return utilizador 
+
+@app.put("/utilizadores/{utilizador_id}", response_model=EpocaOut)
+def actualizar(epoca_id: int, dados: EpocaIn, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    epoca.epoca = dados.epoca
+    db.commit()
+    db.refresh(epoca)
+    return epoca 
+
+@app.delete("/epocas/{epoca_id}", status_code=204)
+def apagar(epoca_id: int, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Epoca não encontrada.")
+    db.delete(epoca)
+    db.commit()
 
 
 
