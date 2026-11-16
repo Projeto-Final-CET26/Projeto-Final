@@ -123,9 +123,9 @@ class JogadorOut(JogadorIn):
     model_config = {"from_attributes": True}
 
 class JogoJogadoresIn(BaseModel):
-    jogo_id: id
-    equipa_id: id
-    jogador_id: id
+    jogo_id: int
+    equipa_id: int
+    jogador_id: int
     estatudo: str
     numero_camisola: int
 
