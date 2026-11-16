@@ -9,6 +9,9 @@ from database import Base, engine
 class Campos(Base):
     __table__ = Table("campo", Base.metadata, autoload_with=engine)
 
+class CoordernadasMetricas(Base):
+    __table__ = Table("coordenadas_metrica", Base.metadata, autoload_with=engine)
+
 class Epocas(Base):
     __table__ = Table("epoca", Base.metadata, autoload_with=engine)
 
@@ -34,6 +37,11 @@ class PosicoesSecundarias(Base):
 class Jogos(Base):
     __table__ = Table("jogo", Base.metadata, autoload_with=engine)
 
+class JogoJogadores(Base):
+    __table__ = Table("jogo_jogadores", Base.metadata, autoload_with=engine)
+
+
+
 
 class Gestores(Base):
     __table__ = Table("gestor", Base.metadata, autoload_with=engine)
@@ -41,5 +49,7 @@ class Gestores(Base):
 
 class Jogadores(Base):
     __table__ = Table("jogador", Base.metadata, autoload_with=engine)
+
+
 
 

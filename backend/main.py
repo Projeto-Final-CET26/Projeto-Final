@@ -63,6 +63,38 @@ def apagar(campo_id: int, db: Session = Depends(get_db)):
     db.delete(campo)
     db.commit()
 
+# CRUD COORDENADAS_METRICAS
+@app.get("/coordenadas_metricas", response_model=list[CoordenadaMetricasOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(CoordernadasMetricas).all()
+
+@app.post("/coordenadas_metricas", response_model=CampoOut, status_code=201)
+def criar(dados: CoordenadaMetricasIn, db: Session = Depends(get_db)):
+    coordenadas_metricas = CoordernadasMetricas(**dados.model_dump())
+    db.add(coordenadas_metricas)
+    db.commit()
+    db.refresh(coordenadas_metricas)
+    return coordenadas_metricas 
+
+@app.put("/coordenadas_metricas/{coordenada_metrica_id}", response_model=CoordenadaMetricasOut)
+def actualizar(coordenada_metrica_id: int, dados: CoordenadaMetricasIn, db: Session = Depends(get_db)):
+    coordenada_metrica = db.query(CoordernadasMetricas).filter(CoordernadasMetricas.id == coordenada_metrica_id).first()
+    if not coordenada_metrica:
+        raise HTTPException(status_code=404, detail="Coordenada Métrica não encontrada.")
+    coordenada_metrica.registo_metrica_id = dados.registo_metrica_id
+    coordenada_metrica.posicao_X = dados.posicao_X
+    coordenada_metrica.posicao_Y = dados.posicao_Y
+    db.commit()
+    db.refresh(coordenada_metrica)
+    return coordenada_metrica
+
+@app.delete("/coordenadas_metricas/{coordenada_metrica_id}", status_code=204)
+def apagar(coordenada_metrica_id: int, db: Session = Depends(get_db)):
+    coordenada_metrica = db.query(CoordernadasMetricas).filter(CoordernadasMetricas.id == coordenada_metrica_id).first()
+    if not coordenada_metrica:
+        raise HTTPException(status_code=404, detail="Coordenada Métrica não encontrada.")
+    db.delete(coordenada_metrica)
+    db.commit()
 
 # CRUD EPOCAS
 @app.get("/epocas", response_model=list[EpocaOut])
@@ -299,6 +331,42 @@ def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
     db.delete(pos_sec)
     db.commit()
+
+# CRUD JOGO_JOGADORES 
+@app.get("/jogo_jogadores", response_model=list[JogoJogadoresOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(JogoJogadores).all()
+
+@app.post("/jogo_jogadores", response_model=JogoJogadoresOut, status_code=201)
+def criar(dados: JogoJogadoresIn, db: Session = Depends(get_db)):
+    jogo_jogador = JogoJogadores(**dados.model_dump())
+    db.add(jogo_jogador)
+    db.commit()
+    db.refresh(jogo_jogador)
+    return jogo_jogador
+
+@app.put("/jogo_jogadores/{jogo_jogadores_id}", response_model=JogoJogadoresOut)
+def actualizar(jogo_jogadores_id: int, dados: JogoJogadoresIn, db: Session = Depends(get_db)):
+    jogo_jogador = db.query(JogoJogadores).filter(JogoJogadores.id == jogo_jogadores_id).first()
+    if not jogo_jogador:
+        raise HTTPException(status_code=404, detail="Jogo / Jogador não encontrado.")
+    jogo_jogador.jogo_id = dados.jogo_id
+    jogo_jogador.equipa_id = dados.equipa_id
+    jogo_jogador.jogador_id = dados.jogador_id
+    jogo_jogador.estatuto = dados.estatudo
+    jogo_jogador.numero_camisola = dados.numero_camisola
+    db.commit()
+    db.refresh(jogo_jogador)
+    return jogo_jogador 
+
+@app.delete("/jogo_jogadores/{jogo_jogadores_id}", status_code=204)
+def apagar(jogo_jogadores_id: int, db: Session = Depends(get_db)):
+    jogo_jogador = db.query(JogoJogadores).filter(JogoJogadores.id == jogo_jogadores_id).first()
+    if not jogo_jogador:
+        raise HTTPException(status_code=404, detail="Jogo / Jogador não encontrado.")
+    db.delete(jogo_jogador)
+    db.commit()
+
 
 
 # CRUD GESTORES

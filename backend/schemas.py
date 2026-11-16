@@ -19,6 +19,17 @@ class EpocaOut(EpocaIn):
     # Permite converter um objecto Book (SQLAlchemy) para este modelo Pydantic
     model_config = {"from_attributes": True}
 
+class CoordenadaMetricasIn(BaseModel):
+    registo_metrica_id: int
+    posicao_X: float
+    posicao_Y: float
+
+class CoordenadaMetricasOut(CoordenadaMetricasIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+
 
 
 class CampoIn(BaseModel):
@@ -60,6 +71,12 @@ class GestorIn(BaseModel):
 
 
 class GestorOut(GestorIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+
+
 class MetricasIn(BaseModel):
     descricao: str
     unidade: str
@@ -101,6 +118,25 @@ class JogadorIn(BaseModel):
 
 
 class JogadorOut(JogadorIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class JogoJogadoresIn(BaseModel):
+    jogo_id: id
+    equipa_id: id
+    jogador_id: id
+    estatudo: str
+    numero_camisola: int
+
+class JogoJogadoresOut(JogoJogadoresIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+
+
+
 class LesaoIn(BaseModel):
     estado: str
     descricao: str
