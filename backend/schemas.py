@@ -29,6 +29,15 @@ class CoordenadaMetricasOut(CoordenadaMetricasIn):
 
     model_config = {"from_attributes": True}
 
+class CompeticaoIn(BaseModel):
+    nome: int
+    tipo_competicao: int 
+
+class CompeticaoOut(CompeticaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
 
 
 
@@ -89,6 +98,35 @@ class MetricasOut(MetricasIn):
 
     model_config = {"from_attributes": True}
 
+class RegistoMetricasIn(BaseModel):
+    jogador_id: int
+    equipa_id: int
+    jogo_id: int
+    metrica_id: int
+    periodo: int
+    tempo_segundos: int
+    sucesso: str
+    tem_posicao: str
+    obs: str
+
+class RegistoMetricasOut(RegistoMetricasIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class MetricasJogoIn(BaseModel):
+    gestor_id: int
+    jogador_id: int
+    jogo_id: int
+    equipa_id: int
+    metrica_id: int
+    valor: float 
+
+class MetricasJogoOut(MetricasJogoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
 class SubMetricaIn(BaseModel):
     metrica_id: int
     descricao: str
@@ -97,6 +135,15 @@ class SubMetricaIn(BaseModel):
 
 class SubMetricaOut(SubMetricaIn):
     id: int
+
+    model_config = {"from_attributes": True}
+
+class RegistoSubMetricaIn(BaseModel):
+    submetrica_id: int
+    registo_metrica_id: int
+
+
+class RegistoSubMetricaOut(RegistoSubMetricaIn):
 
     model_config = {"from_attributes": True}
 

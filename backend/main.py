@@ -63,6 +63,38 @@ def apagar(campo_id: int, db: Session = Depends(get_db)):
     db.delete(campo)
     db.commit()
 
+# CRUD COMPETICOES
+@app.get("/competicoes", response_model=list[CompeticaoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(Competicoes).all()
+
+@app.post("/competicoes", response_model=CompeticaoOut, status_code=201)
+def criar(dados: CompeticaoIn, db: Session = Depends(get_db)):
+    competicao = Competicoes(**dados.model_dump())
+    db.add(competicao)
+    db.commit()
+    db.refresh(competicao)
+    return competicao 
+
+@app.put("/competicoes/{competicao_id}", response_model=CompeticaoOut)
+def actualizar(competicao_id: int, dados: CompeticaoIn, db: Session = Depends(get_db)):
+    competicao = db.query(Competicoes).filter(Competicoes.id == competicao_id).first()
+    if not competicao:
+        raise HTTPException(status_code=404, detail="Competição não encontrada.")
+    competicao.nome = dados.nome
+    competicao.tipo_competicao = dados.tipo_competicao
+    db.commit()
+    db.refresh(competicao)
+    return competicao
+
+@app.delete("/competicoes/{competicao_id}", status_code=204)
+def apagar(competicao_id: int, db: Session = Depends(get_db)):
+    competicao = db.query(Competicoes).filter(Competicoes.id == competicao_id).first()
+    if not competicao:
+        raise HTTPException(status_code=404, detail="Competição não encontrada")
+    db.delete(competicao)
+    db.commit()
+
 # CRUD COORDENADAS_METRICAS
 @app.get("/coordenadas_metricas", response_model=list[CoordenadaMetricasOut])
 def listar(db: Session = Depends(get_db)):
@@ -192,6 +224,81 @@ def apagar(metrica_id: int, db: Session = Depends(get_db)):
     db.delete(metrica)
     db.commit()
 
+# CRUD REGISTO_METRICAS 
+@app.get("/registo_metricas", response_model=list[RegistoMetricasIn])
+def listar(db: Session = Depends(get_db)):
+    return db.query(RegistoMetricas).all()
+
+@app.post("/registo_metricas", response_model=RegistoMetricasOut, status_code=201)
+def criar(dados: RegistoMetricasIn, db: Session = Depends(get_db)):
+    reg_metrica = RegistoMetricas(**dados.model_dump())
+    db.add(reg_metrica)
+    db.commit()
+    db.refresh(reg_metrica)
+    return reg_metrica 
+
+@app.put("/registo_metricas/{registo_metrica_id}", response_model=RegistoMetricasOut)
+def actualizar(registo_metrica_id: int, dados: RegistoMetricasIn, db: Session = Depends(get_db)):
+    reg_metrica = db.query(RegistoMetricas).filter(RegistoMetricas.id == registo_metrica_id).first()
+    if not reg_metrica:
+        raise HTTPException(status_code=404, detail="Metrica não encontrada.")
+    reg_metrica.jogador_id = dados.jogador_id
+    reg_metrica.equipa_id = dados.equipa_id
+    reg_metrica.jogo_id = dados.jogo_id
+    reg_metrica.metrica_id = dados.metrica_id
+    reg_metrica.periodo = dados.periodo
+    reg_metrica.tempo_segundos = dados.tempo_segundos
+    reg_metrica.sucesso = dados.sucesso
+    reg_metrica.tem_posicao = dados.tem_posicao
+    reg_metrica.obs = dados.obs
+    db.commit()
+    db.refresh(reg_metrica)
+    return reg_metrica 
+
+@app.delete("/registo_metricas/{registo_metrica_id}", status_code=204)
+def apagar(registo_metrica_id: int, db: Session = Depends(get_db)):
+    reg_metrica = db.query(RegistoMetricas).filter(RegistoMetricas.id == registo_metrica_id).first()
+    if not reg_metrica:
+        raise HTTPException(status_code=404, detail="RegistoMetrica não encontrada.")
+    db.delete(reg_metrica)
+    db.commit()
+
+# CRUD METRICAS_JOGO 
+@app.get("/metricas_jogo", response_model=list[MetricasJogoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(MetricasJogos).all()
+
+@app.post("/metricas_jogo", response_model=MetricasJogoOut, status_code=201)
+def criar(dados: MetricasJogoIn, db: Session = Depends(get_db)):
+    metrica_jogo = MetricasJogos(**dados.model_dump())
+    db.add(metrica_jogo)
+    db.commit()
+    db.refresh(metrica_jogo)
+    return metrica_jogo 
+
+@app.put("/metricas_jogo/{metricas_jogo_id}", response_model=MetricasJogoOut)
+def actualizar(metricas_jogo_id: int, dados: MetricasJogoIn, db: Session = Depends(get_db)):
+    metricas_jogo = db.query(MetricasJogos).filter(MetricasJogos.id == metricas_jogo_id).first()
+    if not metricas_jogo:
+        raise HTTPException(status_code=404, detail="Metricas Jogo não encontrada.")
+    metricas_jogo.gestor_id = dados.gestor_id
+    metricas_jogo.jogador_id = dados.jogador_id
+    metricas_jogo.jogo_id = dados.jogo_id
+    metricas_jogo.equipa_id = dados.equipa_id
+    metricas_jogo.metrica_id = dados.metrica_id
+    metricas_jogo.valor = dados.valor
+    db.commit()
+    db.refresh(metricas_jogo)
+    return metricas_jogo 
+
+@app.delete("/metricas_jogo/{metricas_jogo_id}", status_code=204)
+def apagar(metricas_jogo_id: int, db: Session = Depends(get_db)):
+    metricas_jogo = db.query(MetricasJogos).filter(MetricasJogos.id == metricas_jogo_id).first()
+    if not metricas_jogo:
+        raise HTTPException(status_code=404, detail="Metricas Jogo não encontrada.")
+    db.delete(metricas_jogo)
+    db.commit()
+
 # CRUD SUBMETRICAS 
 @app.get("/submetricas", response_model=list[SubMetricaOut])
 def listar(db: Session = Depends(get_db)):
@@ -223,6 +330,38 @@ def apagar(submetrica_id: int, db: Session = Depends(get_db)):
     if not submetrica:
         raise HTTPException(status_code=404, detail="Sub-metrica não encontrada.")
     db.delete(submetrica)
+    db.commit()
+
+# CRUD REGISTO_SUBMETRICAS 
+@app.get("/registo_submetricas", response_model=list[RegistoSubMetricaOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(RegistoSubMetricas).all()
+
+@app.post("/registo_submetricas", response_model=RegistoSubMetricaOut, status_code=201)
+def criar(dados: RegistoSubMetricaIn, db: Session = Depends(get_db)):
+    reg_submetrica = RegistoSubMetricas(**dados.model_dump())
+    db.add(reg_submetrica)
+    db.commit()
+    db.refresh(reg_submetrica)
+    return reg_submetrica
+
+@app.put("/registo_submetricas/{registo_submetrica_id}", response_model=RegistoSubMetricaOut)
+def actualizar(registo_submetrica_id: int, dados: RegistoSubMetricaIn, db: Session = Depends(get_db)):
+    reg_submetrica = db.query(RegistoSubMetricas).filter(RegistoSubMetricas.id == registo_submetrica_id).first()
+    if not reg_submetrica:
+        raise HTTPException(status_code=404, detail="Registo Sub-metrica não encontrada.")
+    reg_submetrica.submetrica_id= dados.submetrica_id
+    reg_submetrica.registo_metrica_id = dados.registo_metrica_id
+    db.commit()
+    db.refresh(reg_submetrica)
+    return reg_submetrica 
+
+@app.delete("/registo_submetricas/{registo_submetrica_id}", status_code=204)
+def apagar(registo_submetrica_id: int, db: Session = Depends(get_db)):
+    reg_submetrica = db.query(RegistoSubMetricas).filter(RegistoSubMetricas.id == registo_submetrica_id).first()
+    if not reg_submetrica:
+        raise HTTPException(status_code=404, detail="Registo Sub-metrica não encontrado.")
+    db.delete(reg_submetrica)
     db.commit()
 
 # CRUD LESAO 
