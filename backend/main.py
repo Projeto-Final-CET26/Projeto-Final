@@ -34,6 +34,14 @@ app.add_middleware(
 def listar(db: Session = Depends(get_db)):
     return db.query(Campos).all()
 
+@app.get("/campos/{campo_id}", response_model=CampoOut)
+def obter(campo_id: int, db: Session = Depends(get_db)):
+    campo = db.query(Campos).filter(Campos.id == campo_id).first()
+    if not campo:
+            raise HTTPException(status_code=404, detail="Campo não encontrado.")
+    
+    return campo
+
 @app.post("/campos", response_model=CampoOut, status_code=201)
 def criar(dados: CampoIn, db: Session = Depends(get_db)):
     campo = Campos(**dados.model_dump())
@@ -68,6 +76,13 @@ def apagar(campo_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Competicoes).all()
 
+@app.get("/competicoes/{competicao_id}", response_model=CompeticaoOut)
+def obter(competicao_id: int, db: Session = Depends(get_db)):
+    competicao = db.query(Competicoes).filter(Competicoes.id == competicao_id).first()
+    if not competicao:
+        raise HTTPException(status_code=404, detail="Competição não encontrada.")
+    return competicao
+
 @app.post("/competicoes", response_model=CompeticaoOut, status_code=201)
 def criar(dados: CompeticaoIn, db: Session = Depends(get_db)):
     competicao = Competicoes(**dados.model_dump())
@@ -99,6 +114,15 @@ def apagar(competicao_id: int, db: Session = Depends(get_db)):
 @app.get("/coordenadas_metricas", response_model=list[CoordenadaMetricasOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(CoordernadasMetricas).all()
+
+@app.get("/coordenadas_metricas/{coordenada_metrica_id}", response_model=CoordenadaMetricasOut)
+def obter(coordenada_metrica_id: int, db: Session = Depends(get_db)):
+    coordenada_metrica = db.query(CoordernadasMetricas).filter(
+        CoordernadasMetricas.id == coordenada_metrica_id
+    ).first()
+    if not coordenada_metrica:
+        raise HTTPException(status_code=404, detail="Coordenada Métrica não encontrada.")
+    return coordenada_metrica
 
 @app.post("/coordenadas_metricas", response_model=CampoOut, status_code=201)
 def criar(dados: CoordenadaMetricasIn, db: Session = Depends(get_db)):
@@ -133,6 +157,13 @@ def apagar(coordenada_metrica_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Epocas).all()
 
+@app.get("/epocas/{epoca_id}", response_model=EpocaOut)
+def obter(epoca_id: int, db: Session = Depends(get_db)):
+    epoca = db.query(Epocas).filter(Epocas.id == epoca_id).first()
+    if not epoca:
+        raise HTTPException(status_code=404, detail="Época não encontrada.")
+    return epoca
+
 @app.post("/epocas", response_model=EpocaOut, status_code=201)
 def criar(dados: EpocaIn, db: Session = Depends(get_db)):
     epoca = Campos(**dados.model_dump())
@@ -164,6 +195,13 @@ def apagar(epoca_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Utilizadores).all()
 
+@app.get("/utilizadores/{utilizador_id}", response_model=UtilizadorOut)
+def obter(utilizador_id: int, db: Session = Depends(get_db)):
+    utilizador = db.query(Utilizadores).filter(Utilizadores.id == utilizador_id).first()
+    if not utilizador:
+        raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
+    return utilizador
+
 @app.post("/utilizadores", response_model=UtilizadorOut, status_code=201)
 def criar(dados: UtilizadorIn, db: Session = Depends(get_db)):
     utilizador = Utilizadores(**dados.model_dump())
@@ -194,6 +232,13 @@ def apagar(utilizador_id: int, db: Session = Depends(get_db)):
 @app.get("/metricas", response_model=list[MetricasOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(Metricas).all()
+
+@app.get("/metricas/{metrica_id}", response_model=MetricasOut)
+def obter(metrica_id: int, db: Session = Depends(get_db)):
+    metrica = db.query(Metricas).filter(Metricas.id == metrica_id).first()
+    if not metrica:
+        raise HTTPException(status_code=404, detail="Métrica não encontrada.")
+    return metrica
 
 @app.post("/metricas", response_model=MetricasOut, status_code=201)
 def criar(dados: MetricasIn, db: Session = Depends(get_db)):
@@ -228,6 +273,15 @@ def apagar(metrica_id: int, db: Session = Depends(get_db)):
 @app.get("/registo_metricas", response_model=list[RegistoMetricasIn])
 def listar(db: Session = Depends(get_db)):
     return db.query(RegistoMetricas).all()
+
+@app.get("/registo_metricas/{registo_metrica_id}", response_model=RegistoMetricasOut)
+def obter(registo_metrica_id: int, db: Session = Depends(get_db)):
+    registo_metrica = db.query(RegistoMetricas).filter(
+        RegistoMetricas.id == registo_metrica_id
+    ).first()
+    if not registo_metrica:
+        raise HTTPException(status_code=404, detail="Registo de métrica não encontrado.")
+    return registo_metrica
 
 @app.post("/registo_metricas", response_model=RegistoMetricasOut, status_code=201)
 def criar(dados: RegistoMetricasIn, db: Session = Depends(get_db)):
@@ -268,6 +322,15 @@ def apagar(registo_metrica_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(MetricasJogos).all()
 
+@app.get("/metricas_jogo/{metricas_jogo_id}", response_model=MetricasJogoOut)
+def obter(metricas_jogo_id: int, db: Session = Depends(get_db)):
+    metrica_jogo = db.query(MetricasJogos).filter(
+        MetricasJogos.id == metricas_jogo_id
+    ).first()
+    if not metrica_jogo:
+        raise HTTPException(status_code=404, detail="Métrica de jogo não encontrada.")
+    return metrica_jogo
+
 @app.post("/metricas_jogo", response_model=MetricasJogoOut, status_code=201)
 def criar(dados: MetricasJogoIn, db: Session = Depends(get_db)):
     metrica_jogo = MetricasJogos(**dados.model_dump())
@@ -304,6 +367,13 @@ def apagar(metricas_jogo_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(SubMetricas).all()
 
+@app.get("/submetricas/{submetrica_id}", response_model=SubMetricaOut)
+def obter(submetrica_id: int, db: Session = Depends(get_db)):
+    submetrica = db.query(SubMetricas).filter(SubMetricas.id == submetrica_id).first()
+    if not submetrica:
+        raise HTTPException(status_code=404, detail="Sub-métrica não encontrada.")
+    return submetrica
+
 @app.post("/submetricas", response_model=SubMetricaOut, status_code=201)
 def criar(dados: SubMetricaIn, db: Session = Depends(get_db)):
     submetrica = SubMetricas(**dados.model_dump())
@@ -332,10 +402,66 @@ def apagar(submetrica_id: int, db: Session = Depends(get_db)):
     db.delete(submetrica)
     db.commit()
 
+# CRUD SUBMETRICAS JOGO
+@app.get("/submetricas_jogo", response_model=list[SubmetricasJogoOut])
+def listar(db: Session = Depends(get_db)):
+    return db.query(SubMetricasJogo).all()
+
+@app.get("/submetricas_jogo/{submetricas_jogo_id}", response_model=SubmetricasJogoOut)
+def obter(submetricas_jogo_id: int, db: Session = Depends(get_db)):
+    submetrica_jogo = db.query(SubMetricasJogo).filter(
+        SubMetricasJogo.id == submetricas_jogo_id
+    ).first()
+    if not submetrica_jogo:
+        raise HTTPException(status_code=404, detail="Sub-métrica de jogo não encontrada.")
+    return submetrica_jogo
+
+@app.post("/submetricas_jogo", response_model=SubmetricasJogoOut, status_code=201)
+def criar(dados: SubmetricasJogoIn, db: Session = Depends(get_db)):
+    submetrica_jogo = SubMetricasJogo(**dados.model_dump())
+    db.add(submetrica_jogo)
+    db.commit()
+    db.refresh(submetrica_jogo)
+    return submetrica_jogo
+
+@app.put("/submetricas_jogo/{submetricas_jogo_id}", response_model=SubmetricasJogoOut)
+def actualizar(submetricas_jogo_id: int, dados: SubmetricasJogoIn, db: Session = Depends(get_db)):
+    submetrica_jogo = db.query(SubMetricasJogo).filter(SubMetricasJogo.id == submetricas_jogo_id).first()
+    if not submetrica_jogo:
+        raise HTTPException(status_code=404, detail="Sub-metrica jogo não encontrada.")
+    submetrica_jogo.jogo_id= dados.jogo_id
+    submetrica_jogo.jogador_id = dados.jogador_id
+    submetrica_jogo.submetrica_id = dados.submetrica_id
+    submetrica_jogo.valor = dados.valor
+    db.commit()
+    db.refresh(submetrica_jogo)
+    return submetrica_jogo
+
+@app.delete("/submetricas_jogo/{submetricas_jogo_id}", status_code=204)
+def apagar(submetricas_jogo_id: int, db: Session = Depends(get_db)):
+    submetrica_jogo = db.query(SubMetricasJogo).filter(SubMetricasJogo.id == submetricas_jogo_id).first()
+    if not submetrica_jogo:
+        raise HTTPException(status_code=404, detail="Sub-metrica jogo não encontrada.")
+    db.delete(submetrica_jogo)
+    db.commit()
+
 # CRUD REGISTO_SUBMETRICAS 
 @app.get("/registo_submetricas", response_model=list[RegistoSubMetricaOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(RegistoSubMetricas).all()
+
+@app.get(
+    "/registo_submetricas/{registo_metrica_id}/{submetrica_id}",
+    response_model=RegistoSubMetricaOut,
+)
+def obter(registo_metrica_id: int, submetrica_id: int, db: Session = Depends(get_db)):
+    registo_submetrica = db.query(RegistoSubMetricas).filter(
+        RegistoSubMetricas.registo_metrica_id == registo_metrica_id,
+        RegistoSubMetricas.submetrica_id == submetrica_id,
+    ).first()
+    if not registo_submetrica:
+        raise HTTPException(status_code=404, detail="Registo de sub-métrica não encontrado.")
+    return registo_submetrica
 
 @app.post("/registo_submetricas", response_model=RegistoSubMetricaOut, status_code=201)
 def criar(dados: RegistoSubMetricaIn, db: Session = Depends(get_db)):
@@ -368,6 +494,13 @@ def apagar(registo_submetrica_id: int, db: Session = Depends(get_db)):
 @app.get("/lesoes", response_model=list[LesaoOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(Lesoes).all()
+
+@app.get("/lesoes/{lesao_id}", response_model=LesaoOut)
+def obter(lesao_id: int, db: Session = Depends(get_db)):
+    lesao = db.query(Lesoes).filter(Lesoes.id == lesao_id).first()
+    if not lesao:
+        raise HTTPException(status_code=404, detail="Lesão não encontrada.")
+    return lesao
 
 @app.post("/lesoes", response_model=LesaoOut, status_code=201)
 def criar(dados: LesaoIn, db: Session = Depends(get_db)):
@@ -407,10 +540,26 @@ def apagar(lesao_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Posicoes).all()
 
+@app.get("/posicoes/{posicao_id}", response_model=PosicaoOut)
+def obter(posicao_id: int, db: Session = Depends(get_db)):
+    posicao = db.query(Posicoes).filter(Posicoes.id == posicao_id).first()
+    if not posicao:
+        raise HTTPException(status_code=404, detail="Posição não encontrada.")
+    return posicao
+
 # CRUD POSICAOSECUNDARIA 
 @app.get("/posicoes_secundarias", response_model=list[PosicaoSecundariaOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(PosicoesSecundarias).all()
+
+@app.get("/posicoes_secundarias/{pos_sec_id}", response_model=PosicaoSecundariaOut)
+def obter(pos_sec_id: int, db: Session = Depends(get_db)):
+    pos_sec = db.query(PosicoesSecundarias).filter(
+        PosicoesSecundarias.id == pos_sec_id
+    ).first()
+    if not pos_sec:
+        raise HTTPException(status_code=404, detail="Posição secundária não encontrada.")
+    return pos_sec
 
 @app.post("/posicoes_secundarias", response_model=PosicaoSecundariaOut, status_code=201)
 def criar(dados: PosicaoSecundariaIn, db: Session = Depends(get_db)):
@@ -444,6 +593,13 @@ def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Jogos).all()
 
+@app.get("/jogos/{jogo_id}", response_model=JogoOut)
+def obter(jogo_id: int, db: Session = Depends(get_db)):
+    jogo = db.query(Jogos).filter(Jogos.id == jogo_id).first()
+    if not jogo:
+        raise HTTPException(status_code=404, detail="Jogo não encontrado.")
+    return jogo
+
 @app.post("/jogos", response_model=JogoOut, status_code=201)
 def criar(dados: JogoIn, db: Session = Depends(get_db)):
     jogo = Jogos(**dados.model_dump())
@@ -475,6 +631,15 @@ def apagar(pos_sec_id: int, db: Session = Depends(get_db)):
 @app.get("/jogo_jogadores", response_model=list[JogoJogadoresOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(JogoJogadores).all()
+
+@app.get("/jogo_jogadores/{jogo_jogadores_id}", response_model=JogoJogadoresOut)
+def obter(jogo_jogadores_id: int, db: Session = Depends(get_db)):
+    jogo_jogador = db.query(JogoJogadores).filter(
+        JogoJogadores.id == jogo_jogadores_id
+    ).first()
+    if not jogo_jogador:
+        raise HTTPException(status_code=404, detail="Jogo / Jogador não encontrado.")
+    return jogo_jogador
 
 @app.post("/jogo_jogadores", response_model=JogoJogadoresOut, status_code=201)
 def criar(dados: JogoJogadoresIn, db: Session = Depends(get_db)):
@@ -513,6 +678,13 @@ def apagar(jogo_jogadores_id: int, db: Session = Depends(get_db)):
 def listar(db: Session = Depends(get_db)):
     return db.query(Gestores).all()
 
+@app.get("/gestores/{gestor_id}", response_model=GestorOut)
+def obter(gestor_id: int, db: Session = Depends(get_db)):
+    gestor = db.query(Gestores).filter(Gestores.id == gestor_id).first()
+    if not gestor:
+        raise HTTPException(status_code=404, detail="Gestor não encontrado.")
+    return gestor
+
 @app.put("/gestores/{gestor_id}", response_model=GestorOut)
 def actualizar(gestor_id: int, dados: GestorIn, db: Session = Depends(get_db)):
     gestor = db.query(Gestores).filter(Gestores.id == gestor_id).first()
@@ -538,6 +710,13 @@ def apagar(gestor_id: int, db: Session = Depends(get_db)):
 @app.get("/jogadores", response_model=list[JogadorOut])
 def listar(db: Session = Depends(get_db)):
     return db.query(Jogadores).all()
+
+@app.get("/jogadores/{jogador_id}", response_model=JogadorOut)
+def obter(jogador_id: int, db: Session = Depends(get_db)):
+    jogador = db.query(Jogadores).filter(Jogadores.id == jogador_id).first()
+    if not jogador:
+        raise HTTPException(status_code=404, detail="Jogador não encontrado.")
+    return jogador
 
 @app.post("/jogadores", response_model=JogadorOut, status_code=201)
 def criar(dados: JogadorIn, db: Session = Depends(get_db)):
@@ -577,49 +756,10 @@ def apagar(jogador_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
-
-
-'''
-# GET /books/3  ->  devolve o livro com id 3, ou 404 se não existir
-@app.get("/books/{book_id}", response_model=BookOut)
-def obter(book_id: int, db: Session = Depends(get_db)):
-    livro = db.query(Book).filter(Book.id == book_id).first()
-    if not livro:
-        raise HTTPException(status_code=404, detail="Livro não encontrado")
-    return livro
-
-
-# POST /books  ->  cria um livro novo e devolve-o com o id (código 201)
-@app.post("/books", response_model=BookOut, status_code=201)
-def criar(dados: BookIn, db: Session = Depends(get_db)):
-    livro = Book(**dados.model_dump())  # passa o JSON para um objecto Book
-    db.add(livro)                       # prepara a inserção
-    db.commit()                         # grava na base de dados
-    db.refresh(livro)                   # lê o id gerado pelo MySQL
-    return livro
-
-
-# PUT /books/3  ->  substitui os dados do livro 3
-@app.put("/books/{book_id}", response_model=BookOut)
-def actualizar(book_id: int, dados: BookIn, db: Session = Depends(get_db)):
-    livro = db.query(Book).filter(Book.id == book_id).first()
-    if not livro:
-        raise HTTPException(status_code=404, detail="Livro não encontrado")
-    livro.title = dados.title
-    livro.author = dados.author
-    livro.year = dados.year
-    db.commit()
-    db.refresh(livro)
-    return livro
-
-
-# DELETE /books/3  ->  apaga o livro 3 (código 204 = sucesso sem conteúdo)
-@app.delete("/books/{book_id}", status_code=204)
-def apagar(book_id: int, db: Session = Depends(get_db)):
-    livro = db.query(Book).filter(Book.id == book_id).first()
-    if not livro:
-        raise HTTPException(status_code=404, detail="Livro não encontrado")
-    db.delete(livro)
-    db.commit()
-
-'''
+#ENDPOINT GET PERIODOS E DURAÇÃO DE DESPORTO
+@app.get("/desportos/{desporto_id}", response_model=DesportoOut)
+def obter(desporto_id: int, db: Session = Depends(get_db)):
+    desporto = db.query(Desportos).filter(Desportos.id == desporto.id).first()
+    if not desporto:
+        raise HTTPException(status_code=404, detail="Desporto não encontrado.")
+    return desporto

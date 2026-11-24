@@ -29,8 +29,11 @@ class MetricasJogos(Base):
 class SubMetricas(Base):
     __table__ = Table("submetricas", Base.metadata, autoload_with=engine)
 
+class SubMetricasJogo(Base):
+    __table__ = Table("submetricas_jogo", Base.metadata, autoload_with=engine)
+
 class RegistoSubMetricas(Base):
-    __table__ = Table("submetricas", Base.metadata, autoload_with=engine)
+    __table__ = Table("registo_submetricas", Base.metadata, autoload_with=engine)
 
 class Lesoes(Base):
     __table__ = Table("lesao", Base.metadata, autoload_with=engine)
@@ -52,6 +55,11 @@ class Gestores(Base):
 
 class Jogadores(Base):
     __table__ = Table("jogador", Base.metadata, autoload_with=engine)
+
+class Desportos(Base):
+    __table__ = Table("desportos", Base.metadata, autoload_with=engine)
+
+
 
 
 

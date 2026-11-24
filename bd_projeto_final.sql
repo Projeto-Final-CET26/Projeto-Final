@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Anfitrião:                    127.0.0.1
--- Versão do servidor:           8.4.3 - MySQL Community Server - GPL
--- SO do servidor:               Win64
--- HeidiSQL Versão:              12.8.0.6908
+-- Host:                         127.0.0.1
+-- Server version:               8.4.3 - MySQL Community Server - GPL
+-- Server OS:                    Win64
+-- HeidiSQL Version:             12.17.0.7270
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- A despejar estrutura da base de dados para projeto_final
+-- Dumping database structure for projeto_final
 CREATE DATABASE IF NOT EXISTS `projeto_final` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `projeto_final`;
 
--- A despejar estrutura para tabela projeto_final.campo
+-- Dumping structure for table projeto_final.campo
 DROP TABLE IF EXISTS `campo`;
 CREATE TABLE IF NOT EXISTS `campo` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -28,13 +28,11 @@ CREATE TABLE IF NOT EXISTS `campo` (
   `cidade` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `capacidade` int NOT NULL DEFAULT (0),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.campo: ~1 rows (aproximadamente)
-INSERT INTO `campo` (`id`, `nome`, `morada`, `cidade`, `capacidade`) VALUES
-	(1, 'Lusitano da Luz', '', '', 0);
+-- Dumping data for table projeto_final.campo: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.competicao
+-- Dumping structure for table projeto_final.competicao
 DROP TABLE IF EXISTS `competicao`;
 CREATE TABLE IF NOT EXISTS `competicao` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -43,9 +41,9 @@ CREATE TABLE IF NOT EXISTS `competicao` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.competicao: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.competicao: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.coordenadas_metrica
+-- Dumping structure for table projeto_final.coordenadas_metrica
 DROP TABLE IF EXISTS `coordenadas_metrica`;
 CREATE TABLE IF NOT EXISTS `coordenadas_metrica` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -57,9 +55,9 @@ CREATE TABLE IF NOT EXISTS `coordenadas_metrica` (
   CONSTRAINT `FK_coordenadas_metrica_registo_metrica` FOREIGN KEY (`registo_metrica_id`) REFERENCES `registo_metrica` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.coordenadas_metrica: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.coordenadas_metrica: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.desportos
+-- Dumping structure for table projeto_final.desportos
 DROP TABLE IF EXISTS `desportos`;
 CREATE TABLE IF NOT EXISTS `desportos` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -68,14 +66,14 @@ CREATE TABLE IF NOT EXISTS `desportos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.desportos: ~4 rows (aproximadamente)
+-- Dumping data for table projeto_final.desportos: ~4 rows (approximately)
 INSERT INTO `desportos` (`id`, `nome`, `icone_url`) VALUES
 	(1, 'Basquetebol', NULL),
 	(2, 'Futebol', NULL),
 	(3, 'Voleibol', NULL),
 	(4, 'Andebol', NULL);
 
--- A despejar estrutura para tabela projeto_final.epoca
+-- Dumping structure for table projeto_final.epoca
 DROP TABLE IF EXISTS `epoca`;
 CREATE TABLE IF NOT EXISTS `epoca` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -83,10 +81,8 @@ CREATE TABLE IF NOT EXISTS `epoca` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.epoca: ~27 rows (aproximadamente)
+-- Dumping data for table projeto_final.epoca: ~25 rows (approximately)
 INSERT INTO `epoca` (`id`, `epoca`) VALUES
-	(2, '2000/2001'),
-	(3, '2001/2002'),
 	(4, '2002/2003'),
 	(5, '2003/2004'),
 	(6, '2004/2005'),
@@ -113,12 +109,12 @@ INSERT INTO `epoca` (`id`, `epoca`) VALUES
 	(27, '2025/2026'),
 	(28, '2026/2027');
 
--- A despejar estrutura para tabela projeto_final.equipa
+-- Dumping structure for table projeto_final.equipa
 DROP TABLE IF EXISTS `equipa`;
 CREATE TABLE IF NOT EXISTS `equipa` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
-  `campo_id` int NOT NULL,
+  `campo_id` int DEFAULT NULL,
   `desporto_id` int NOT NULL,
   `escalao` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `cidade` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -128,15 +124,15 @@ CREATE TABLE IF NOT EXISTS `equipa` (
   PRIMARY KEY (`id`),
   KEY `FK_equipa_campo` (`campo_id`),
   KEY `FK_equipa_desportos` (`desporto_id`),
-  CONSTRAINT `FK_equipa_campo` FOREIGN KEY (`campo_id`) REFERENCES `campo` (`id`),
+  CONSTRAINT `FK_equipa_campo` FOREIGN KEY (`campo_id`) REFERENCES `campo` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_equipa_desportos` FOREIGN KEY (`desporto_id`) REFERENCES `desportos` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.equipa: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.equipa: ~1 rows (approximately)
 INSERT INTO `equipa` (`id`, `nome`, `campo_id`, `desporto_id`, `escalao`, `cidade`, `pais`, `ano_fundacao`, `logo_url`) VALUES
-	(1, 'Lusitano FC', 1, 2, '3', 'Évora', 'Portugal', '2026', 'klknlmk');
+	(1, 'Lusitano FC', NULL, 2, '3', 'Évora', 'Portugal', '2026', 'klknlmk');
 
--- A despejar estrutura para tabela projeto_final.gestor
+-- Dumping structure for table projeto_final.gestor
 DROP TABLE IF EXISTS `gestor`;
 CREATE TABLE IF NOT EXISTS `gestor` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -148,12 +144,14 @@ CREATE TABLE IF NOT EXISTS `gestor` (
   KEY `FK_gestor_equipa` (`equipa_id`),
   KEY `FK_gestor_utilizadores` (`utilizador_id`),
   CONSTRAINT `FK_gestor_equipa` FOREIGN KEY (`equipa_id`) REFERENCES `equipa` (`id`),
-  CONSTRAINT `FK_gestor_utilizadores` FOREIGN KEY (`utilizador_id`) REFERENCES `utilizadores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK_gestor_utilizadores` FOREIGN KEY (`utilizador_id`) REFERENCES `utilizadores` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.gestor: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.gestor: ~1 rows (approximately)
+INSERT INTO `gestor` (`id`, `primeiro_nome`, `apelido`, `equipa_id`, `utilizador_id`) VALUES
+	(3, 'gui', NULL, NULL, 3);
 
--- A despejar estrutura para tabela projeto_final.jogador
+-- Dumping structure for table projeto_final.jogador
 DROP TABLE IF EXISTS `jogador`;
 CREATE TABLE IF NOT EXISTS `jogador` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -164,33 +162,33 @@ CREATE TABLE IF NOT EXISTS `jogador` (
   `altura_cm` float NOT NULL,
   `peso_kg` float NOT NULL,
   `foto_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `numero_camisola` int NOT NULL,
+  `numero_camisola` int DEFAULT NULL,
   `equipa_id` int NOT NULL,
   `desporto_id` int NOT NULL,
-  `posicao` int NOT NULL,
+  `posicao_id` int NOT NULL,
   `utilizador_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_jogador_desportos` (`desporto_id`),
-  KEY `FK_jogador_posicoes` (`posicao`),
   KEY `FK_jogador_utilizadores` (`utilizador_id`),
   KEY `FK_jogador_equipa` (`equipa_id`),
+  KEY `FK_jogador_posicoes` (`posicao_id`) USING BTREE,
   CONSTRAINT `FK_jogador_desportos` FOREIGN KEY (`desporto_id`) REFERENCES `desportos` (`id`),
   CONSTRAINT `FK_jogador_equipa` FOREIGN KEY (`equipa_id`) REFERENCES `equipa` (`id`),
-  CONSTRAINT `FK_jogador_posicoes` FOREIGN KEY (`posicao`) REFERENCES `posicoes` (`id`),
+  CONSTRAINT `FK_jogador_posicoes` FOREIGN KEY (`posicao_id`) REFERENCES `posicoes` (`id`),
   CONSTRAINT `FK_jogador_utilizadores` FOREIGN KEY (`utilizador_id`) REFERENCES `utilizadores` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.jogador: ~1 rows (aproximadamente)
-INSERT INTO `jogador` (`id`, `primeiro_nome`, `apelido`, `nacionalidade`, `data_nascimento`, `altura_cm`, `peso_kg`, `foto_url`, `numero_camisola`, `equipa_id`, `desporto_id`, `posicao`, `utilizador_id`) VALUES
-	(2, 'Cristiano', 'Ronaldo', 'Português', '2026-11-03', 180, 75, NULL, 7, 1, 2, 15, NULL);
+-- Dumping data for table projeto_final.jogador: ~1 rows (approximately)
+INSERT INTO `jogador` (`id`, `primeiro_nome`, `apelido`, `nacionalidade`, `data_nascimento`, `altura_cm`, `peso_kg`, `foto_url`, `numero_camisola`, `equipa_id`, `desporto_id`, `posicao_id`, `utilizador_id`) VALUES
+	(6, '0a', 'a', 'a', '2026-11-24', 2, 2, NULL, 3, 1, 2, 19, 3);
 
--- A despejar estrutura para tabela projeto_final.jogador_equipas
+-- Dumping structure for table projeto_final.jogador_equipas
 DROP TABLE IF EXISTS `jogador_equipas`;
 CREATE TABLE IF NOT EXISTS `jogador_equipas` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `jogador_id` int DEFAULT NULL,
-  `equipa_id` int DEFAULT NULL,
-  `epoca_id` int DEFAULT NULL,
+  `jogador_id` int NOT NULL,
+  `equipa_id` int NOT NULL,
+  `epoca_id` int NOT NULL,
   `data_inicio` int DEFAULT NULL,
   `data_fim` int DEFAULT NULL,
   `posicao_id` int DEFAULT NULL,
@@ -205,14 +203,14 @@ CREATE TABLE IF NOT EXISTS `jogador_equipas` (
   CONSTRAINT `FK__posicoes_` FOREIGN KEY (`posicao_id`) REFERENCES `posicoes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.jogador_equipas: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.jogador_equipas: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.jogo
+-- Dumping structure for table projeto_final.jogo
 DROP TABLE IF EXISTS `jogo`;
 CREATE TABLE IF NOT EXISTS `jogo` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `campo_id` int DEFAULT NULL,
   `epoca_id` int NOT NULL,
-  `campo_id` int NOT NULL,
   `equipa_casa` int NOT NULL,
   `equipa_fora` int NOT NULL,
   `pontos_casa` int NOT NULL,
@@ -220,20 +218,20 @@ CREATE TABLE IF NOT EXISTS `jogo` (
   `data_hora` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_epoca_id` (`epoca_id`),
-  KEY `FK_jogo_campo` (`campo_id`),
   KEY `FK_jogo_equipa_casa` (`equipa_casa`),
   KEY `FK_jogo_equipa_fora` (`equipa_fora`),
+  KEY `FK_jogo_campo` (`campo_id`),
   CONSTRAINT `fk_epoca_id` FOREIGN KEY (`epoca_id`) REFERENCES `epoca` (`id`),
-  CONSTRAINT `FK_jogo_campo` FOREIGN KEY (`campo_id`) REFERENCES `campo` (`id`),
+  CONSTRAINT `FK_jogo_campo` FOREIGN KEY (`campo_id`) REFERENCES `campo` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_jogo_equipa_casa` FOREIGN KEY (`equipa_casa`) REFERENCES `equipa` (`id`),
   CONSTRAINT `FK_jogo_equipa_fora` FOREIGN KEY (`equipa_fora`) REFERENCES `equipa` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.jogo: ~0 rows (aproximadamente)
-INSERT INTO `jogo` (`id`, `epoca_id`, `campo_id`, `equipa_casa`, `equipa_fora`, `pontos_casa`, `pontos_fora`, `data_hora`) VALUES
-	(2, 28, 1, 1, 1, 1, 1, '2026-11-03 09:18:50');
+-- Dumping data for table projeto_final.jogo: ~1 rows (approximately)
+INSERT INTO `jogo` (`id`, `campo_id`, `epoca_id`, `equipa_casa`, `equipa_fora`, `pontos_casa`, `pontos_fora`, `data_hora`) VALUES
+	(3, NULL, 7, 1, 1, 1, 1, '2026-11-04 11:10:09');
 
--- A despejar estrutura para tabela projeto_final.jogo_jogadores
+-- Dumping structure for table projeto_final.jogo_jogadores
 DROP TABLE IF EXISTS `jogo_jogadores`;
 CREATE TABLE IF NOT EXISTS `jogo_jogadores` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -251,9 +249,9 @@ CREATE TABLE IF NOT EXISTS `jogo_jogadores` (
   CONSTRAINT `KF_jogo_jogo` FOREIGN KEY (`jogo_id`) REFERENCES `jogo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.jogo_jogadores: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.jogo_jogadores: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.jogo_substituicoes
+-- Dumping structure for table projeto_final.jogo_substituicoes
 DROP TABLE IF EXISTS `jogo_substituicoes`;
 CREATE TABLE IF NOT EXISTS `jogo_substituicoes` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -274,9 +272,9 @@ CREATE TABLE IF NOT EXISTS `jogo_substituicoes` (
   CONSTRAINT `FK_jogo_substituicoes_jogo` FOREIGN KEY (`jogo_id`) REFERENCES `jogo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.jogo_substituicoes: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.jogo_substituicoes: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.lesao
+-- Dumping structure for table projeto_final.lesao
 DROP TABLE IF EXISTS `lesao`;
 CREATE TABLE IF NOT EXISTS `lesao` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -297,9 +295,9 @@ CREATE TABLE IF NOT EXISTS `lesao` (
   CONSTRAINT `FK_lesao_zona_lesao` FOREIGN KEY (`zona`) REFERENCES `zona_lesao` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.lesao: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.lesao: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.metricas
+-- Dumping structure for table projeto_final.metricas
 DROP TABLE IF EXISTS `metricas`;
 CREATE TABLE IF NOT EXISTS `metricas` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -310,13 +308,15 @@ CREATE TABLE IF NOT EXISTS `metricas` (
   PRIMARY KEY (`id`),
   KEY `FK_metricas_desportos` (`desporto_id`),
   CONSTRAINT `FK_metricas_desportos` FOREIGN KEY (`desporto_id`) REFERENCES `desportos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.metricas: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.metricas: ~2 rows (approximately)
 INSERT INTO `metricas` (`id`, `descricao`, `unidade`, `desporto_id`, `sempre_visivel`) VALUES
-	(3, 'Remate', 'qtd', 2, 'S');
+	(19, 'Remate', 'Contagem', 2, 'S'),
+	(20, 'Passe', 'Contagem', 2, 'S'),
+	(21, 'Falta', 'Contagem', 2, 'S');
 
--- A despejar estrutura para tabela projeto_final.metricas_jogo
+-- Dumping structure for table projeto_final.metricas_jogo
 DROP TABLE IF EXISTS `metricas_jogo`;
 CREATE TABLE IF NOT EXISTS `metricas_jogo` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -340,9 +340,9 @@ CREATE TABLE IF NOT EXISTS `metricas_jogo` (
   CONSTRAINT `FK_metricas_jogo_equipa` FOREIGN KEY (`equipa_id`) REFERENCES `equipa` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.metricas_jogo: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.metricas_jogo: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.posicao_metricas
+-- Dumping structure for table projeto_final.posicao_metricas
 DROP TABLE IF EXISTS `posicao_metricas`;
 CREATE TABLE IF NOT EXISTS `posicao_metricas` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -358,9 +358,9 @@ CREATE TABLE IF NOT EXISTS `posicao_metricas` (
   CONSTRAINT `fk_pm_posicao` FOREIGN KEY (`posicao_id`) REFERENCES `posicoes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.posicao_metricas: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.posicao_metricas: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.posicoes
+-- Dumping structure for table projeto_final.posicoes
 DROP TABLE IF EXISTS `posicoes`;
 CREATE TABLE IF NOT EXISTS `posicoes` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -372,7 +372,7 @@ CREATE TABLE IF NOT EXISTS `posicoes` (
   CONSTRAINT `FK_posicoes_desportos` FOREIGN KEY (`desporto_id`) REFERENCES `desportos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.posicoes: ~29 rows (aproximadamente)
+-- Dumping data for table projeto_final.posicoes: ~29 rows (approximately)
 INSERT INTO `posicoes` (`id`, `desporto_id`, `nome`, `sigla`) VALUES
 	(1, 1, 'Base', 'PG'),
 	(2, 1, 'Escolta', 'SG'),
@@ -404,7 +404,7 @@ INSERT INTO `posicoes` (`id`, `desporto_id`, `nome`, `sigla`) VALUES
 	(28, 2, 'Médio Esquerdo', 'ME'),
 	(29, 2, 'Médio Direito', 'MD');
 
--- A despejar estrutura para tabela projeto_final.posicoes_secundarias
+-- Dumping structure for table projeto_final.posicoes_secundarias
 DROP TABLE IF EXISTS `posicoes_secundarias`;
 CREATE TABLE IF NOT EXISTS `posicoes_secundarias` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -417,9 +417,9 @@ CREATE TABLE IF NOT EXISTS `posicoes_secundarias` (
   CONSTRAINT `FK__posicoes` FOREIGN KEY (`posicao_id`) REFERENCES `posicoes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.posicoes_secundarias: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.posicoes_secundarias: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.registo_metrica
+-- Dumping structure for table projeto_final.registo_metrica
 DROP TABLE IF EXISTS `registo_metrica`;
 CREATE TABLE IF NOT EXISTS `registo_metrica` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -443,9 +443,9 @@ CREATE TABLE IF NOT EXISTS `registo_metrica` (
   CONSTRAINT `FK_registo_metrica_metricas` FOREIGN KEY (`metrica_id`) REFERENCES `metricas` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.registo_metrica: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.registo_metrica: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.registo_submetricas
+-- Dumping structure for table projeto_final.registo_submetricas
 DROP TABLE IF EXISTS `registo_submetricas`;
 CREATE TABLE IF NOT EXISTS `registo_submetricas` (
   `registo_metrica_id` int NOT NULL,
@@ -457,9 +457,9 @@ CREATE TABLE IF NOT EXISTS `registo_submetricas` (
   CONSTRAINT `fk_rms_submetrica` FOREIGN KEY (`submetrica_id`) REFERENCES `submetricas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.registo_submetricas: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.registo_submetricas: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.submetricas
+-- Dumping structure for table projeto_final.submetricas
 DROP TABLE IF EXISTS `submetricas`;
 CREATE TABLE IF NOT EXISTS `submetricas` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -471,31 +471,38 @@ CREATE TABLE IF NOT EXISTS `submetricas` (
   KEY `FK_submetricas_equipa` (`equipa_id`),
   CONSTRAINT `FK__metricas__` FOREIGN KEY (`metrica_id`) REFERENCES `metricas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_submetricas_equipa` FOREIGN KEY (`equipa_id`) REFERENCES `equipa` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.submetricas: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.submetricas: ~5 rows (approximately)
 INSERT INTO `submetricas` (`id`, `metrica_id`, `descricao`, `equipa_id`) VALUES
-	(5, 3, 'Pontapé de Bicicleta', NULL),
-	(6, 3, 'Cabeçeamento', NULL);
+	(46, 20, 'Assistência', NULL),
+	(47, 20, 'Passe Curto', NULL),
+	(48, 20, 'Passe Longo', NULL),
+	(49, 20, 'Passe em Desmarcação', NULL),
+	(50, 20, 'Cruzamento', NULL);
 
--- A despejar estrutura para tabela projeto_final.submetricas_jogo
+-- Dumping structure for table projeto_final.submetricas_jogo
 DROP TABLE IF EXISTS `submetricas_jogo`;
 CREATE TABLE IF NOT EXISTS `submetricas_jogo` (
-  `jogo_id` int NOT NULL,
-  `jogador_id` int NOT NULL,
-  `submetrica_id` int NOT NULL,
-  `valor` decimal(20,6) NOT NULL,
-  PRIMARY KEY (`jogo_id`,`jogador_id`,`submetrica_id`),
-  KEY `jogador_id` (`jogador_id`),
-  KEY `submetrica_id` (`submetrica_id`),
-  CONSTRAINT `submetricas_jogo_ibfk_1` FOREIGN KEY (`jogo_id`) REFERENCES `jogo` (`id`),
-  CONSTRAINT `submetricas_jogo_ibfk_2` FOREIGN KEY (`jogador_id`) REFERENCES `jogador` (`id`),
-  CONSTRAINT `submetricas_jogo_ibfk_3` FOREIGN KEY (`submetrica_id`) REFERENCES `submetricas` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `jogo_id` int NOT NULL DEFAULT '0',
+  `jogador_id` int NOT NULL DEFAULT '0',
+  `submetrica_id` int NOT NULL DEFAULT '0',
+  `valor` float DEFAULT (0),
+  PRIMARY KEY (`id`),
+  KEY `FK_submetricas_jogo_jogo` (`jogo_id`),
+  KEY `FK_submetricas_jogo_jogador` (`jogador_id`),
+  KEY `FK_submetricas_jogo_submetricas` (`submetrica_id`),
+  CONSTRAINT `FK_submetricas_jogo_jogador` FOREIGN KEY (`jogador_id`) REFERENCES `jogador` (`id`),
+  CONSTRAINT `FK_submetricas_jogo_jogo` FOREIGN KEY (`jogo_id`) REFERENCES `jogo` (`id`),
+  CONSTRAINT `FK_submetricas_jogo_submetricas` FOREIGN KEY (`submetrica_id`) REFERENCES `submetricas` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.submetricas_jogo: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.submetricas_jogo: ~1 rows (approximately)
+INSERT INTO `submetricas_jogo` (`id`, `jogo_id`, `jogador_id`, `submetrica_id`, `valor`) VALUES
+	(5, 3, 6, 46, 2);
 
--- A despejar estrutura para tabela projeto_final.tipo_competicao
+-- Dumping structure for table projeto_final.tipo_competicao
 DROP TABLE IF EXISTS `tipo_competicao`;
 CREATE TABLE IF NOT EXISTS `tipo_competicao` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -503,9 +510,9 @@ CREATE TABLE IF NOT EXISTS `tipo_competicao` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.tipo_competicao: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.tipo_competicao: ~0 rows (approximately)
 
--- A despejar estrutura para tabela projeto_final.tipo_utilizador
+-- Dumping structure for table projeto_final.tipo_utilizador
 DROP TABLE IF EXISTS `tipo_utilizador`;
 CREATE TABLE IF NOT EXISTS `tipo_utilizador` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -513,43 +520,45 @@ CREATE TABLE IF NOT EXISTS `tipo_utilizador` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.tipo_utilizador: ~3 rows (aproximadamente)
+-- Dumping data for table projeto_final.tipo_utilizador: ~3 rows (approximately)
 INSERT INTO `tipo_utilizador` (`id`, `tipo`) VALUES
 	(1, 'Admin'),
 	(2, 'Gestor'),
 	(3, 'Jogador');
 
--- A despejar estrutura para tabela projeto_final.utilizadores
+-- Dumping structure for table projeto_final.utilizadores
 DROP TABLE IF EXISTS `utilizadores`;
 CREATE TABLE IF NOT EXISTS `utilizadores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `primeiro_nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
   `apelido` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tipo` int NOT NULL DEFAULT '0',
+  `tipo` int NOT NULL,
   `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `foto_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `data_registo` date NOT NULL,
+  `data_registo` datetime NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   KEY `FK_utilizadores_tipo_utilizador` (`tipo`) USING BTREE,
   CONSTRAINT `FK_utilizadores_tipo_utilizador` FOREIGN KEY (`tipo`) REFERENCES `tipo_utilizador` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.utilizadores: ~0 rows (aproximadamente)
+-- Dumping data for table projeto_final.utilizadores: ~1 rows (approximately)
+INSERT INTO `utilizadores` (`id`, `primeiro_nome`, `apelido`, `tipo`, `password`, `email`, `foto_url`, `data_registo`) VALUES
+	(3, 'gui', NULL, 2, '123', 'a', NULL, '2026-11-04 10:58:48');
 
--- A despejar estrutura para vista projeto_final.vw_estatisticas_jogador_epoca
+-- Dumping structure for view projeto_final.vw_estatisticas_jogador_epoca
 DROP VIEW IF EXISTS `vw_estatisticas_jogador_epoca`;
--- A criar tabela temporária para vencer erros de dependências VIEW
+-- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vw_estatisticas_jogador_epoca` 
-) ENGINE=MyISAM;
+);
 
--- A despejar estrutura para vista projeto_final.vw_estatisticas_submetricas_jogador_epoca
+-- Dumping structure for view projeto_final.vw_estatisticas_submetricas_jogador_epoca
 DROP VIEW IF EXISTS `vw_estatisticas_submetricas_jogador_epoca`;
--- A criar tabela temporária para vencer erros de dependências VIEW
+-- Creating temporary table to overcome VIEW dependency errors
 CREATE TABLE `vw_estatisticas_submetricas_jogador_epoca` 
-) ENGINE=MyISAM;
+);
 
--- A despejar estrutura para tabela projeto_final.zona_lesao
+-- Dumping structure for table projeto_final.zona_lesao
 DROP TABLE IF EXISTS `zona_lesao`;
 CREATE TABLE IF NOT EXISTS `zona_lesao` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -558,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `zona_lesao` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela projeto_final.zona_lesao: ~26 rows (aproximadamente)
+-- Dumping data for table projeto_final.zona_lesao: ~26 rows (approximately)
 INSERT INTO `zona_lesao` (`id`, `descricao`, `segmento`) VALUES
 	(1, 'Cabeça / Crânio', 'Cabeça e Pescoço'),
 	(2, 'Rosto / Face', 'Cabeça e Pescoço'),
@@ -587,7 +596,7 @@ INSERT INTO `zona_lesao` (`id`, `descricao`, `segmento`) VALUES
 	(25, 'Pé / Dedos do Pé', 'Membros Inferiores'),
 	(26, 'Planta do Pé / Fascia Plantar', 'Membros Inferiores');
 
--- A despejar estrutura para disparador projeto_final.trg_inserir_gestor_automatico
+-- Dumping structure for trigger projeto_final.trg_inserir_gestor_automatico
 DROP TRIGGER IF EXISTS `trg_inserir_gestor_automatico`;
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
@@ -599,13 +608,15 @@ END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A remover tabela temporária e a criar estrutura VIEW final
+-- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vw_estatisticas_jogador_epoca`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vw_estatisticas_jogador_epoca` AS select `j`.`id` AS `jogador_id`,`j`.`nome` AS `nome_jogador`,`g`.`epoca_id` AS `epoca_id`,`m`.`id` AS `metrica_id`,`m`.`descricao` AS `metrica`,sum(cast(`mj`.`valor` as decimal(10,2))) AS `total_epoca`,avg(cast(`mj`.`valor` as decimal(10,2))) AS `media_por_jogo`,count(distinct `mj`.`jogo_id`) AS `jogos` from (((`metricas_jogo` `mj` join `jogador` `j` on((`j`.`id` = `mj`.`jogador_id`))) join `jogo` `g` on((`g`.`id` = `mj`.`jogo_id`))) join `metricas` `m` on((`m`.`id` = `mj`.`metrica_id`))) group by `j`.`id`,`j`.`nome`,`g`.`epoca_id`,`m`.`id`,`m`.`descricao`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vw_estatisticas_jogador_epoca` AS select `j`.`id` AS `jogador_id`,`j`.`nome` AS `nome_jogador`,`g`.`epoca_id` AS `epoca_id`,`m`.`id` AS `metrica_id`,`m`.`descricao` AS `metrica`,sum(cast(`mj`.`valor` as decimal(10,2))) AS `total_epoca`,avg(cast(`mj`.`valor` as decimal(10,2))) AS `media_por_jogo`,count(distinct `mj`.`jogo_id`) AS `jogos` from (((`metricas_jogo` `mj` join `jogador` `j` on((`j`.`id` = `mj`.`jogador_id`))) join `jogo` `g` on((`g`.`id` = `mj`.`jogo_id`))) join `metricas` `m` on((`m`.`id` = `mj`.`metrica_id`))) group by `j`.`id`,`j`.`nome`,`g`.`epoca_id`,`m`.`id`,`m`.`descricao`
+;
 
--- A remover tabela temporária e a criar estrutura VIEW final
+-- Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `vw_estatisticas_submetricas_jogador_epoca`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vw_estatisticas_submetricas_jogador_epoca` AS select `t`.`jogador_id` AS `jogador_id`,`t`.`nome_jogador` AS `nome_jogador`,`t`.`epoca_id` AS `epoca_id`,`t`.`metrica_id` AS `metrica_id`,`t`.`metrica` AS `metrica`,`t`.`submetrica_id` AS `submetrica_id`,`t`.`submetrica` AS `submetrica`,`t`.`total_epoca` AS `total_epoca`,`t`.`jogos` AS `jogos`,round(((100 * `t`.`total_epoca`) / nullif(`e`.`total_epoca`,0)),1) AS `percentagem_da_metrica` from ((select `j`.`id` AS `jogador_id`,`j`.`nome` AS `nome_jogador`,`g`.`epoca_id` AS `epoca_id`,`m`.`id` AS `metrica_id`,`m`.`descricao` AS `metrica`,`s`.`id` AS `submetrica_id`,`s`.`descricao` AS `submetrica`,sum(`sj`.`valor`) AS `total_epoca`,count(distinct `sj`.`jogo_id`) AS `jogos` from ((((`submetricas_jogo` `sj` join `submetricas` `s` on((`s`.`id` = `sj`.`submetrica_id`))) join `metricas` `m` on((`m`.`id` = `s`.`metrica_id`))) join `jogador` `j` on((`j`.`id` = `sj`.`jogador_id`))) join `jogo` `g` on((`g`.`id` = `sj`.`jogo_id`))) group by `j`.`id`,`j`.`nome`,`g`.`epoca_id`,`m`.`id`,`m`.`descricao`,`s`.`id`,`s`.`descricao`) `t` left join `vw_estatisticas_jogador_epoca` `e` on(((`e`.`jogador_id` = `t`.`jogador_id`) and (`e`.`epoca_id` = `t`.`epoca_id`) and (`e`.`metrica_id` = `t`.`metrica_id`))));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vw_estatisticas_submetricas_jogador_epoca` AS select `t`.`jogador_id` AS `jogador_id`,`t`.`nome_jogador` AS `nome_jogador`,`t`.`epoca_id` AS `epoca_id`,`t`.`metrica_id` AS `metrica_id`,`t`.`metrica` AS `metrica`,`t`.`submetrica_id` AS `submetrica_id`,`t`.`submetrica` AS `submetrica`,`t`.`total_epoca` AS `total_epoca`,`t`.`jogos` AS `jogos`,round(((100 * `t`.`total_epoca`) / nullif(`e`.`total_epoca`,0)),1) AS `percentagem_da_metrica` from ((select `j`.`id` AS `jogador_id`,`j`.`nome` AS `nome_jogador`,`g`.`epoca_id` AS `epoca_id`,`m`.`id` AS `metrica_id`,`m`.`descricao` AS `metrica`,`s`.`id` AS `submetrica_id`,`s`.`descricao` AS `submetrica`,sum(`sj`.`valor`) AS `total_epoca`,count(distinct `sj`.`jogo_id`) AS `jogos` from ((((`submetricas_jogo` `sj` join `submetricas` `s` on((`s`.`id` = `sj`.`submetrica_id`))) join `metricas` `m` on((`m`.`id` = `s`.`metrica_id`))) join `jogador` `j` on((`j`.`id` = `sj`.`jogador_id`))) join `jogo` `g` on((`g`.`id` = `sj`.`jogo_id`))) group by `j`.`id`,`j`.`nome`,`g`.`epoca_id`,`m`.`id`,`m`.`descricao`,`s`.`id`,`s`.`descricao`) `t` left join `vw_estatisticas_jogador_epoca` `e` on(((`e`.`jogador_id` = `t`.`jogador_id`) and (`e`.`epoca_id` = `t`.`epoca_id`) and (`e`.`metrica_id` = `t`.`metrica_id`))))
+;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
