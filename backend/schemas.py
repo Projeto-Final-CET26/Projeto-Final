@@ -221,6 +221,17 @@ class PosicaoSecundariaOut(PosicaoSecundariaIn):
 
     model_config = {"from_attributes": True}
 
+class PosicaoMetricaIn(BaseModel):
+    posicao_id: int
+    metrica_id: int
+    equipa_id: int
+
+
+class PosicaoMetricaOut(PosicaoMetricaIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
 class JogoIn(BaseModel):
     epoca_id: int
     campo_id: int
@@ -230,9 +241,16 @@ class JogoIn(BaseModel):
     pontos_fora: int
     data_hora: datetime
 
-
-
 class JogoOut(JogoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+class ZonaLesaoIn(BaseModel):
+    descricao: str
+    segmento: str 
+
+class ZonaLesaoOut(ZonaLesaoIn):
     id: int
 
     model_config = {"from_attributes": True}
