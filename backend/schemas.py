@@ -142,11 +142,21 @@ class RegistoSubMetricaIn(BaseModel):
     submetrica_id: int
     registo_metrica_id: int
 
-
 class RegistoSubMetricaOut(RegistoSubMetricaIn):
 
     model_config = {"from_attributes": True}
 
+
+class SubmetricasJogoIn(BaseModel):
+    jogo_id: int
+    jogador_id: int
+    submetrica_id: int
+    valor: float
+
+class SubmetricasJogoOut(SubmetricasJogoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
 
 
 class JogadorIn(BaseModel):
@@ -251,6 +261,25 @@ class ZonaLesaoIn(BaseModel):
     segmento: str 
 
 class ZonaLesaoOut(ZonaLesaoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+
+class DesportoIn(BaseModel):
+    nome: str
+    icone_url: str | None
+    periodos: int
+    duracao_periodo_seg: int
+
+class DesportoOut(DesportoIn):
+    id: int
+
+    model_config = {"from_attributes": True}
+
+
+
+class JogoOut(JogoIn):
     id: int
 
     model_config = {"from_attributes": True}
