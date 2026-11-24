@@ -44,6 +44,9 @@ class Posicoes(Base):
 class PosicoesSecundarias(Base):
     __table__ = Table("posicoes_secundarias", Base.metadata, autoload_with=engine)
 
+class PosicaoMetricas(Base):
+    __table__ = Table("posicao_metricas", Base.metadata, autoload_with=engine)
+
 class Jogos(Base):
     __table__ = Table("jogo", Base.metadata, autoload_with=engine)
 
@@ -59,7 +62,8 @@ class Jogadores(Base):
 class Desportos(Base):
     __table__ = Table("desportos", Base.metadata, autoload_with=engine)
 
-
+class ZonaLesao(Base):
+    __table__ = Table("zona_lesao", Base.metadata, autoload_with=engine)
 
 
 
